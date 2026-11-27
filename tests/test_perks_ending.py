@@ -1,0 +1,35 @@
+import asyncio
+from playwright.async_api import async_playwright
+async def main():
+    async with async_playwright() as p:
+        b=await p.chromium.launch();pg=await b.new_page(viewport={'width':393,'height':820})
+        errs=[];pg.on('pageerror',lambda e:errs.append(str(e)[:200]))
+        await pg.route('**/fonts.*/**',lambda r:r.abort())
+        await pg.goto('http://localhost:8766/dev.html')
+        await pg.evaluate("window._noSave=1;localStorage.clear();localStorage.setItem('pq3-vs',JSON.stringify({opt:{tips:false},lv:50,runs:9,clear:[10,10,10,10,10,9],sel:{st:5,rd:10},waza:{kaiten:{star:6,exp:0}},bring:['kaiten']}))")
+        await pg.reload();await pg.wait_for_timeout(400)
+        print('caps',await pg.evaluate("PQ3.ev('JSON.stringify([invCap(),bringN(),pwN(),spdMax(),abMax(),allySlots(),abyssOpen(),throneOpen(),auraLv()])')"))
+        await pg.click('[data-act=gov][data-v=perk]');await pg.wait_for_timeout(100);await pg.screenshot(path='/tmp/pq3test_perk1.png',full_page=True)
+        # clear round 10 -> ending
+        await pg.click('[data-act=gov][data-v=stage]')
+        await pg.evaluate("PQ3.ev('startRun();endRun(true)')");await pg.wait_for_timeout(200)
+        print((await pg.inner_text('#mbox')).replace('\n',' / ')[:600])
+        await pg.click('#tv');await pg.wait_for_timeout(3000);await pg.screenshot(path='/tmp/pq3test_ending1.png')
+        await pg.wait_for_timeout(4000);await pg.screenshot(path='/tmp/pq3test_ending2.png')
+        await pg.click('#ending');await pg.wait_for_timeout(300)
+        print('ending gone',await pg.evaluate("!document.getElementById('ending')"),await pg.evaluate("PQ3.SV.endingSeen"))
+        print('caps10',await pg.evaluate("PQ3.ev('JSON.stringify([invCap(),bringN(),pwN(),spdMax(),abMax(),allySlots(),abyssOpen(),throneOpen()])')"))
+        await pg.evaluate("PQ3.ev('SV.endBest=3600;renderCamp()')")
+        print('caps60',await pg.evaluate("PQ3.ev('JSON.stringify([invCap(),bringN(),pwN(),spdMax(),abMax(),allySlots(),throneOpen(),auraLv()])')"))
+        await pg.click('[data-act=gov][data-v=perk]');await pg.wait_for_timeout(100);await pg.screenshot(path='/tmp/pq3test_perk2.png',full_page=True)
+        # pause speed
+        await pg.click('[data-act=gov][data-v=stage]');await pg.click('[data-act=sortie]');await pg.wait_for_timeout(800)
+        await pg.click('#pause');await pg.wait_for_timeout(200);await pg.click('[data-act=pspd][data-v="3"]');await pg.wait_for_timeout(100)
+        await pg.screenshot(path='/tmp/pq3test_pause.png')
+        print('spd',await pg.evaluate("PQ3.ev('[SV.opt.spd,effSpd()]')"))
+        await pg.click('#rs');await pg.wait_for_timeout(500);await pg.screenshot(path='/tmp/pq3test_aura.png')
+        await pg.evaluate("PQ3.ev('endRun(false);toCamp()')")
+        await pg.click('[data-tab=town]');await pg.click('[data-act=townv][data-v=deco]');await pg.wait_for_timeout(100);await pg.screenshot(path='/tmp/pq3test_deco.png',full_page=True)
+        await pg.click('[data-tab=waza]');await pg.wait_for_timeout(100);await pg.screenshot(path='/tmp/pq3test_bring.png')
+        print(errs);await b.close()
+asyncio.run(main())

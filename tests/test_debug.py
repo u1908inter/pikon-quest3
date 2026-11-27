@@ -1,0 +1,27 @@
+import asyncio
+from playwright.async_api import async_playwright
+async def main():
+    async with async_playwright() as p:
+        b=await p.chromium.launch();pg=await b.new_page(viewport={'width':393,'height':820})
+        errs=[];pg.on('pageerror',lambda e:errs.append(str(e)));await pg.route('**/fonts.*/**',lambda r:r.abort())
+        await pg.goto('http://localhost:8766/dev.html')
+        await pg.evaluate("window._noSave=1;localStorage.clear();localStorage.setItem('pq3-vs',JSON.stringify({seen:{hsAdv:1},opt:{sound:true,zoom:true,tips:false,dbgMenu:true},lv:7,runs:5,gold:123,clear:[1,0,0,0,0,0]}))")
+        await pg.reload();await pg.wait_for_timeout(400)
+        await pg.click('[data-tab=cfg]');await pg.click('[data-act=cfgv][data-v=dbg]');await pg.screenshot(path='/tmp/pq3test_dbg1.png',full_page=True)
+        await pg.click('[data-act=dbgGo][data-v="10"]');await pg.click('#dgo');await pg.wait_for_timeout(1500)
+        print('after',await pg.evaluate("JSON.stringify({d:PQ3.SV.debug,lv:PQ3.SV.lv,inv:PQ3.SV.inv.length,eq:PQ3.SV.eq,party:PQ3.SV.party,abil:PQ3.SV.abil.length,bring:PQ3.SV.bring,clear:PQ3.SV.clear,bak:!!localStorage.getItem('pq3-vs-bak')})"))
+        print((await pg.inner_text('#panel'))[:120].replace('\n',' / '))
+        await pg.screenshot(path='/tmp/pq3test_dbg2.png')
+        await pg.click('[data-tab=cfg]');await pg.click('[data-act=cfgv][data-v=dbg]')
+        await pg.click('[data-act=tgl][data-k=dbgGod][data-v="1"]');await pg.wait_for_timeout(2500);print('cfgv',await pg.evaluate("PQ3.ev('CFGV+TAB')"))
+        await pg.click('[data-act=dbgAbyss][data-v="10"]');await pg.wait_for_timeout(300);print('R?',await pg.evaluate("!!PQ3.R"),errs,(await pg.inner_text('#mbox'))[:80]);await pg.wait_for_timeout(4700)
+        print('abyss',await pg.evaluate("PQ3.ev('JSON.stringify({t:Math.round(R.t),en:R.en.length,hp:R.hp,max:R.max,boss:!!R.boss})')"))
+        await pg.screenshot(path='/tmp/pq3test_dbg3.png')
+        await pg.evaluate("PQ3.ev('endRun(false);toCamp()')")
+        await pg.click('[data-tab=cfg]');await pg.click('[data-act=cfgv][data-v=dbg]');await pg.click('[data-act=dbgThrone]');await pg.wait_for_timeout(4000)
+        print('throne',await pg.evaluate("PQ3.ev('JSON.stringify({boss:R.boss&&R.boss.T.n,hp:R.hp})')"))
+        await pg.evaluate("PQ3.ev('endRun(false);toCamp()')")
+        await pg.click('[data-tab=cfg]');await pg.click('[data-act=cfgv][data-v=dbg]');await pg.click('[data-act=dbgRestore]');await pg.click('#dro');await pg.wait_for_timeout(1500)
+        print('restored',await pg.evaluate("JSON.stringify({d:PQ3.SV.debug,lv:PQ3.SV.lv,gold:PQ3.SV.gold,bak:!!localStorage.getItem('pq3-vs-bak')})"))
+        print('errs',errs);await b.close()
+asyncio.run(main())

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ピコーン・クエスト3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+/* VOICE: 前作と同じ、拠点でいろいろ整えてから出撃するゲーム画面。ひと目で「3」とわかる色
+   IDEA: 前作の拠点UI（上に拠点の景色、下にタブとパネル）を、ミントの紙と深緑青のインクで刷り直したもの
+   PICTURE: 上の窓に疑似3Dの草原とキャンプ。出撃中は窓が画面いっぱいに広がる
+   COLOUR and TYPE: ミント紙 #dff2ec・深緑青インク #163c45・コーラル #ff6b57（初代=黒×白×金、2=生成り×こげ茶×金と被らない）。DotGothic16
+   LAYOUT: 縦長1画面。上部バー、拠点の窓、8つのタブ、パネル */
+:root{color-scheme:light;--bg:#dff2ec;--paper:#f7fcfa;--ink:#163c45;--line:#b7d9cf;--dim:#5d817c;--pri:#ff6b57;--pri-d:#d9483a;--sec:#1f8a7d;--gold:#f2b705;--atk:#e0533d;--def:#3366d6;--spc:#8a4fd1;--mint:#6fe3b5;--hot:#ff5a4e;--xp:#4ec2ff}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 'DotGothic16','MS Gothic','Osaka-Mono',ui-monospace,monospace;overflow:hidden;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit}
+#app{max-width:520px;margin:0 auto;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 6px}
+.top h1{margin:0;font-size:17px;font-weight:normal;letter-spacing:.02em}
+.top h1 b{font-weight:normal;color:#fff;background:var(--pri);border:2px solid var(--ink);border-radius:6px;padding:0 6px;margin-left:4px}
+.pill{display:inline-block;border:2px solid var(--ink);border-radius:999px;background:var(--paper);padding:1px 10px;font-size:13px;margin-left:4px;white-space:nowrap}
+/*intro*/.intro{text-align:left}.intro p{margin:6px 0;line-height:1.65;font-size:14px}.intro h3{margin:10px 0 2px}.intro b{color:var(--pri-d)}
+#stage{position:relative;height:30vh;min-height:190px;margin:0 10px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;flex:none;touch-action:none}
+.battle #stage{flex:1;height:auto;margin:0;border:0;border-radius:0}
+.battle .top,.battle #camp{display:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;background:#5cb85c;touch-action:none}
+#tx{background:transparent;image-rendering:auto;pointer-events:none}
+#camptag{position:absolute;left:8px;top:8px;background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:0 8px;font-size:12px}
+.battle #camptag{display:none}
+#camp{flex:1;overflow-y:auto;padding:8px 10px 24px;-webkit-overflow-scrolling:touch}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-bottom:6px;padding-top:8px}
+.tabs button{border:2px solid var(--ink);border-radius:9px 9px 4px 4px;background:var(--paper);padding:7px 0;font-size:13px;position:relative;cursor:pointer;min-height:40px}
+.tabs button.on{background:var(--pri);color:#fff}
+.tabs button.locked{border-style:dashed;border-color:var(--line);color:var(--line);background:transparent}
+.tabs button.locked::after{content:'';position:absolute;right:5px;top:5px;width:6px;height:5px;border:2px solid var(--line);border-radius:2px}
+.nb{position:absolute;right:-4px;top:-8px;background:var(--gold);color:var(--ink);font-size:10px;border:1.5px solid var(--ink);border-radius:6px;padding:0 3px;line-height:1.3}
+#panel{background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:10px 12px 14px}
+#panel h3{font-size:15px;font-weight:normal;margin:14px 0 6px;padding-bottom:2px;border-bottom:2px solid var(--line)}
+#panel h3:first-child{margin-top:2px}
+.hint{color:var(--dim);font-size:12px;margin:4px 0}
+.btn{border:2px solid var(--ink);border-radius:9px;background:#fff;padding:7px 12px;cursor:pointer;min-height:40px}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--pri);color:#fff;border-color:var(--ink)}
+.btn.sec{background:var(--sec);color:#fff}
+.btn.big{width:100%;padding:12px;font-size:18px}
+.btn.sm{padding:3px 10px;font-size:12px;min-height:32px}
+.btn.danger{background:#ffd9d3;border-color:var(--atk)}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.row .btn{flex:1}
+.list{display:flex;flex-direction:column;gap:5px}
+.li{display:flex;gap:8px;align-items:center;text-align:left;border:1.5px solid var(--line);border-radius:8px;background:#fff;padding:6px 8px;width:100%;cursor:pointer}
+.li.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--pri) inset}
+.li.locked{opacity:.55;cursor:default;border-style:dashed}
+.li .body{flex:1}
+.li .t{display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.li .d{font-size:12px;color:var(--dim)}
+.px{image-rendering:pixelated;flex:none}
+.cat{display:inline-block;font-size:10px;color:#fff;border-radius:4px;padding:0 4px;margin-left:4px;vertical-align:1px}
+.cat.atk{background:var(--atk)}.cat.def{background:var(--def)}.cat.spc{background:var(--spc)}.cat.any{background:var(--sec)}
+.tag{display:inline-block;font-size:11px;border:1.5px solid var(--ink);border-radius:5px;padding:0 4px;margin-left:4px;background:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.chip{border:1.5px solid var(--ink);border-radius:999px;background:#fff;padding:2px 10px;font-size:12px;cursor:pointer;min-height:30px}
+.chip.on{background:var(--pri);color:#fff}
+.mslots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.mslot{border:2px solid var(--ink);border-radius:9px;background:#fff;padding:5px 6px;font-size:12px;text-align:left;cursor:pointer;min-height:58px}
+.mslot.on{background:#ffe9e5}
+.mslot .s{color:var(--dim);font-size:11px}
+.bar{height:10px;border:2px solid var(--ink);border-radius:6px;background:#fff;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;background:var(--sec)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;font-size:13px}
+.stats div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:2px 0}
+.stats span{color:var(--dim)}
+.stages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.stg{border:2px dashed var(--line);border-radius:9px;padding:6px 8px;color:var(--line);font-size:12px}
+.stg b{display:block;font-weight:normal;font-size:14px}
+.stg.on{border:2px solid var(--ink);background:#ffe9e5;color:var(--ink)}
+.cur{display:flex;gap:10px;align-items:flex-start}
+.abl{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--line);padding:3px 0;font-size:13px}
+.abl.no{color:var(--dim)}
+.aphead{display:flex;justify-content:space-between;font-size:13px;margin:2px 0}.aphead b{color:var(--pri-d);font-weight:normal;font-size:16px}
+.bar.ap i{background:var(--sec)}
+.abr{display:flex;gap:8px;align-items:flex-start;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px dashed var(--line);padding:5px 2px;font:inherit;color:inherit;cursor:pointer}
+.abr .ap{flex:none;width:26px;height:26px;border-radius:6px;background:var(--sec);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+.abr .nm{flex:1;font-size:13px}.abr small{display:block;color:var(--dim);font-size:11px}
+.abr.on{background:rgba(31,138,125,.12)}.abr.over{background:rgba(255,107,87,.12)}.abr.no{opacity:.45;cursor:default}.abr.no .ap{background:var(--dim)}
+.tag.ng{background:var(--pri)}
+.up{color:#1f8a3d;font-size:12px}.down{color:#c0392b;font-size:12px}
+.tgl{display:flex;gap:8px;align-items:center;font-size:12px;margin:2px 0 6px;cursor:pointer}.tgl input{width:18px;height:18px;accent-color:var(--sec)}
+.chip small{opacity:.6}
+.subtabs{position:sticky;top:0;z-index:2;background:var(--paper);padding:4px 0;margin-bottom:4px;display:flex;flex-wrap:nowrap;gap:4px}
+.subtabs .chip{flex:1 1 auto;padding:2px 6px;white-space:nowrap;text-align:center;font-size:12px;min-width:0}
+.tag.rr{background:#7fb0ff}.tag.gr{background:linear-gradient(90deg,#ff8ae6,#ffe14a,#6fe3b5)}
+.mslots.ab{grid-template-columns:repeat(4,1fr)}
+.abl small{color:var(--dim)}
+textarea{width:100%;height:80px;font:12px monospace;border:2px solid var(--ink);border-radius:8px;padding:6px}
+#modal{position:absolute;inset:0;background:rgba(10,30,34,.55);display:flex;align-items:center;justify-content:center;padding:14px;z-index:10}
+#modal[hidden]{display:none}
+#mbox{background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:14px;width:100%;max-width:420px;max-height:100%;overflow-y:auto;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+#mbox h2{margin:0 0 8px;font-size:18px;font-weight:normal}
+#mbox p{margin:6px 0}
+.opts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.opts .btn{flex:1}
+.choice{display:block;width:100%;text-align:left;margin-top:6px}
+.choice.evo{background:#fff4cc;border-color:var(--gold)}
+.choice .r{float:right;color:var(--pri-d)}
+.choice small{display:block;color:var(--dim);font-size:12px}
+.res{margin:6px 0;padding-left:1.2em}
+.res li.hl{color:var(--pri-d)}
+.toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:6px 16px;font-size:13px;z-index:20;max-width:90%;text-align:center}
+/* 出撃中のHUD */
+#hud{position:absolute;left:0;right:0;top:0;padding:6px 10px;pointer-events:none;display:none;color:#fff}
+#xpb{height:10px;background:#000;border:2px solid #fff;border-radius:4px}
+#xpb i{display:block;height:100%;width:0;background:var(--xp)}
+#hrow{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-top:4px;text-shadow:2px 2px 0 #000}
+#time{font-size:20px}
+#streak{color:var(--gold);min-width:4.5em;text-align:center}
+#wz{font-size:12px;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;margin-top:2px}#wz b{color:var(--gold);font-weight:normal}
+#pause{pointer-events:auto;font-size:14px;color:#fff;background:rgba(0,0,0,.45);border:2px solid #fff;border-radius:6px;min-height:36px;min-width:44px}
+#jb{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:none;font-size:15px;color:#fff;background:rgba(22,60,69,.8);border:3px solid #9fd8cb;border-radius:24px;min-height:48px;min-width:150px;padding:4px 16px;overflow:hidden;z-index:2}
+#jb i{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--pri)}
+#jb.ready{border-color:#fff;background:var(--pri);animation:pulse .6s infinite alternate}
+@keyframes pulse{to{transform:translateX(-50%) scale(1.06)}}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#jb.ready{animation:none}}
+</style></head><body>
+<div id="app" class="camp">
+ <header class="top"><h1>ピコーン・クエスト<b>3</b></h1><div><span class="pill" id="lvPill">Lv1</span><span class="pill" id="goldPill">0G</span></div></header>
+ <div id="stage">
+  <canvas id="cv"></canvas><canvas id="tx"></canvas>
+  <div id="camptag">拠点 ― キャンプ</div>
+  <div id="hud"><div id="xpb"><i id="xpi"></i></div><div id="hrow"><span id="lvl">Lv1</span><span id="time">0:00</span><span id="kills">0体</span><span id="streak"></span><button id="pause" aria-label="一時停止">II</button></div><div id="wz"></div></div>
+  <button id="jb" aria-label="職業技"><span id="jbn">職業技</span><i id="jbg"></i></button>
+ </div>
+ <div id="camp"><nav class="tabs" id="tabs"></nav><div id="panel"></div></div>
+ <div id="fpsM" style="position:fixed;right:6px;bottom:4px;z-index:50;font:11px monospace;color:#fff;background:rgba(0,0,0,.55);padding:1px 5px;border-radius:4px;pointer-events:none;display:none"></div><div id="modal" hidden><div id="mbox"></div></div>
+</div>
+<script>
+/*@@JS@@*/
+</script>
+</body></html>
