@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.6';
+const SAVE_V=3,GAME_VER='0.9.7';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -365,10 +365,10 @@ const CARD_SLOTS=[0,1,1,2,1,2,3],cardSlots=it=>CARD_SLOTS[it.r]||0;
 const stageOf=k=>STAGES.findIndex(S=>S.foes.includes(k)||S.elite===k||S.boss===k);
 const upCost=k=>Math.round(UPS[k].cost(SV.up[k])*(1-(flags().shopDisc||0)));
 const UPS={
- atk:{n:'村の鍛冶屋',d:'ダメージ+5%',max:5,cost:l=>[100,250,500,900,1500][l]},
- hp:{n:'村の食堂',d:'最大HP+10',max:5,cost:l=>[100,250,500,900,1500][l]},
- spd:{n:'村の靴屋',d:'移動速度+3%',max:5,cost:l=>[150,350,700,1200,2000][l]},
- slot:{n:'なかまの宿',d:'連れて行ける仲間+1（最大5体）',max:4,cost:l=>[200,600,1300,2500][l]}
+ atk:{n:'村の鍛冶屋',d:'ダメージ+5%',max:5,cost:l=>[1000,2500,5000,9000,15000][l]},
+ hp:{n:'村の食堂',d:'最大HP+10',max:5,cost:l=>[1000,2500,5000,9000,15000][l]},
+ spd:{n:'村の靴屋',d:'移動速度+3%',max:5,cost:l=>[1500,3500,7000,12000,20000][l]},
+ slot:{n:'なかまの宿',d:'連れて行ける仲間+1（最大5体）',max:4,cost:l=>[2000,6000,13000,25000][l]}
 };
 
 const WAZA={

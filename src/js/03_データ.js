@@ -154,10 +154,10 @@ const CARD_SLOTS=[0,1,1,2,1,2,3],cardSlots=it=>CARD_SLOTS[it.r]||0;
 const stageOf=k=>STAGES.findIndex(S=>S.foes.includes(k)||S.elite===k||S.boss===k);
 const upCost=k=>Math.round(UPS[k].cost(SV.up[k])*(1-(flags().shopDisc||0)));
 const UPS={
- atk:{n:'村の鍛冶屋',d:'ダメージ+5%',max:5,cost:l=>[100,250,500,900,1500][l]},
- hp:{n:'村の食堂',d:'最大HP+10',max:5,cost:l=>[100,250,500,900,1500][l]},
- spd:{n:'村の靴屋',d:'移動速度+3%',max:5,cost:l=>[150,350,700,1200,2000][l]},
- slot:{n:'なかまの宿',d:'連れて行ける仲間+1（最大5体）',max:4,cost:l=>[200,600,1300,2500][l]}
+ atk:{n:'村の鍛冶屋',d:'ダメージ+5%',max:5,cost:l=>[1000,2500,5000,9000,15000][l]},
+ hp:{n:'村の食堂',d:'最大HP+10',max:5,cost:l=>[1000,2500,5000,9000,15000][l]},
+ spd:{n:'村の靴屋',d:'移動速度+3%',max:5,cost:l=>[1500,3500,7000,12000,20000][l]},
+ slot:{n:'なかまの宿',d:'連れて行ける仲間+1（最大5体）',max:4,cost:l=>[2000,6000,13000,25000][l]}
 };
 
 const WAZA={
