@@ -6,7 +6,7 @@ from shots import EARLY
 from playwright.async_api import async_playwright
 OUT=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','assets')
 TMP='/tmp/pq3vid'
-SCENES=[('battle',"closeModal();SV.opt.nums='crit';SV.sel={st:3,rd:1};startRun();R.t=82",[(3.2,"R.jg=1;jobSkill()")],8.0),
+SCENES=[('battle',"closeModal();SV.opt.nums='crit';SV.sel={st:3,rd:1};startRun();R.t=82;window.__mv=setInterval(()=>{const t=performance.now()/1000,a=t*0.9+Math.sin(t*0.7)*1.2;stick.x=Math.cos(a);stick.y=Math.sin(a)*.85},40)",[(3.6,"R.jg=1;jobSkill()")],8.0),
         ('boss',"closeModal();SV.opt.nums='crit';SV.sel={st:1,rd:1};startRun();R.t=115.5",[],8.0)]
 async def main():
     shutil.rmtree(TMP,ignore_errors=True)
