@@ -92,7 +92,7 @@ function comboFire(c,A,B){SV.comboBook=SV.comboBook||{};const key=comboKey(c),is
  if(n==='魔王スライム'){const e=pick(v)||{x:R.x,y:R.y-40};R.tq.push({at:R.t+.4,f:()=>{meteor(e.x,e.y,100,150*X);shake(14)}})}}
 function comboTick(){if(R.t<10)return;R.comboCD=R.comboCD||{};const own=R.allies.filter(a=>!a.until);
  for(const c of ALLY_COMBO){const A=own.find(a=>a.k===c[0]),B=own.find(a=>a.k===c[1]);if(!A||!B)continue;const key=comboKey(c);if(R.t<(R.comboCD[key]||0))continue;R.comboCD[key]=R.t+20;comboFire(c,A,B);break}}
-function allyTick(dt){R.allies=R.allies.filter(a=>!a.until||R.t<a.until);comboTick();for(const a of R.allies){a.t+=dt;if(a.evo){a.et+=dt;if(a.et>=6){a.et=0;evoFx(a)}}if(ALLY[a.k]&&ALLY[a.k].ai){allyAI(a,dt);continue}
+function allyTick(dt){R.allies=R.allies.filter(a=>!a.until||R.t<a.until);comboTick();for(const a of R.allies){const dx=a.x-R.x,dy=a.y-R.y,d=Math.hypot(dx,dy);if(d<14&&a.k!=='bat'){const k=(14-d)*Math.min(1,dt*8)/(d||1);a.x+=(d?dx:1)*k;a.y+=(d?dy:0)*k}}for(const a of R.allies){a.t+=dt;if(a.evo){a.et+=dt;if(a.et>=6){a.et=0;evoFx(a)}}if(ALLY[a.k]&&ALLY[a.k].ai){allyAI(a,dt);continue}
   if(a.k==='slime'){const dx=R.x-12*R.face-a.x+(a.ox||0),dy=R.y+6-a.y+(a.oy||0),l=Math.hypot(dx,dy);if(l>4){const v=Math.min(l*3,60)*R.F.allySpd;a.x+=dx/l*v*dt;a.y+=dy/l*v*dt}
    if(a.t>6){a.t=0;heal((4+2*a.lv)*R.F.slimeHeal*R.F.allyHeal*allyMul(a))}
    const gm=R.t<(R.giantT||0)?3:1;for(const e of R.en)if(!e.dead&&Math.hypot(e.x-a.x,e.y-a.y)<e.T.r+5*gm)hurtEnemy(e,(3+a.lv)*R.F.ally*allyMul(a)*(R.t<R.boostT?3:1)*(gm>1?2:1),'as',.5,a)}
