@@ -14,7 +14,6 @@ async def main():
         await pg.evaluate("c=>PQ3.ev(c)",open(os.path.join(HERE,'sim2.js')).read())
         await pg.evaluate("PQ3.ev('sfx.gem=()=>{};sfx.hit=()=>{};window.TOT=0;window.RUNS=0;window.MS={}')");await pg.evaluate("m=>PQ3.ev('SIM.mode=\"'+m+'\"')",MODE)
         if DIFJ: await pg.evaluate('c=>PQ3.ev(c)',DIFJ)
-        import os
         if os.environ.get('LOAD'):
             st=open(os.environ['LOAD']).read();await pg.evaluate("s=>PQ3.ev('(()=>{const o=JSON.parse(atob(\"'+s+'\"));for(const k in SV)delete SV[k];Object.assign(SV,o);SV.opt.tips=false})()')",__import__('base64').b64encode(st.encode()).decode())
             await pg.evaluate("PQ3.ev('window.TOT=0;window.RUNS=0;window.MS={}')")
@@ -27,7 +26,7 @@ async def main():
              TOT+=r.played;RUNS++;const ms=[];
              for(let k=1;k<=10;k++)if((SV.clear[5]||0)>=k&&!MS['rd'+k]){MS['rd'+k]=[TOT,RUNS];ms.push('rd'+k)}
              for(let m=5;m<=100;m+=5)if((SV.endBest||0)>=m*60&&!MS['ab'+m]){MS['ab'+m]=[TOT,RUNS];ms.push('ab'+m)}
-             return JSON.stringify({r,TOT,RUNS,ms,rank:SV.lv,best:SV.endBest||0,mast:mastered().length,altar:altarSum(),clear:SV.clear,party:SV.party.length})})()"""
+             return JSON.stringify({r,TOT,RUNS,ms,rank:SV.lv,best:SV.endBest||0,mast:mastered().length,altar:altarSum(),clear:SV.clear,party:SV.party.length,up:SV.up,gold:SV.gold,earn:window.EARN||0})})()"""
             out=await pg.evaluate("c=>PQ3.ev(c)",js)
             f.write(out+'\n');f.flush()
             if STOP and ('"'+STOP+'"') in out: break
