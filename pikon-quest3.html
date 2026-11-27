@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.7';
+const SAVE_V=3,GAME_VER='0.9.8';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -1428,7 +1428,7 @@ const INTRO={
  tab_ally:['仲間','<p>敵が 落とす <b>ハート</b>を 拾うと、その 敵が 仲間に なる。</p><p>仲間は 連れて行った 冒険で いっしょに 戦い、育つ。連れて行く 仲間は ここで えらぶ。</p><p>同じ 種族の ハートは <b>魂</b>に なる。魂で <b>合体</b>させると 仲間が 強くなる。</p><p>決まった 2体を いっしょに 連れて行くと <b>合体技</b>を 出すことも。</p>'],
  tab_gear:['装備','<p>強敵や ボスが 落とした 装備、装備屋で 買った 装備は ここで 身につける。</p><p>武器の 種類で <b>攻撃の 形が かわる</b>。ジョブの 得意武器なら ダメージ アップ。</p><p>迷ったら <b>おすすめ装備</b>ボタン。いらない 装備は まとめて 売れる。</p><p>カードは 装備の カード枠に 挿して 使う。</p><p>同じ 装備でも 効果の <b>品質</b>で 強さが ちがう。まれに <b>輝く</b> 装備・<b>伝説の 効果</b>・<b>セット</b>装備も 出る。深淵で 拾うと <b>深淵Lv</b>が つく。欲しい 効果を 登録すると ★で 知らせ、売らずに のこす。</p>'],
  tab_job:['ジョブ','<p>ジョブごとに 基本能力・得意武器・<b>必殺技</b>が ちがう。</p><p>冒険の 経験値で ジョブLvが 上がり、<b>アビリティ</b>を 覚える。覚えた アビリティは どの ジョブでも APの 範囲で はめられる。</p><p>ジョブを マスターすると その ジョブの 力の 一部が ずっと 効き、新しい ジョブも ひらく。転職は いつでも 無料。</p>'],
- jbv_ab:['アビリティ','<p>覚えた アビリティを はめる 画面。はめられる 数と <b>AP</b>に 上限が ある。</p><p>AP上限は ジョブを マスターするたびに 増える。</p>'],
+ jbv_ab:['アビリティ','<p>覚えた アビリティを はめる 画面。<b>はめた アビリティだけが 効く</b>（いまの ジョブの ものも 同じ）。はめられる 数と <b>AP</b>に 上限が ある。</p><p>AP上限は ジョブを マスターするたびに 増える。</p>'],
  jbv_chg:['転職','<p>いつでも 無料で ジョブを かえられる。JPは ジョブごとに たまる。</p><p>上級ジョブは、決まった ジョブを マスターすると 選べるように なる。</p>'],
  jbv_bonus:['マスターボーナス','<p>マスターした ジョブの 基本能力の 半分が、どの ジョブでも 効く。</p><p>マスターするほど どんどん 強くなる。</p>'],
  jbv_pw:['力の枠','<p>ユニーク装備（オレンジ）から 抽出した <b>力</b>を はめる 枠。</p><p>はめた 力は、どの 装備を 着ていても 効果が 出る。</p>'],
@@ -1543,7 +1543,7 @@ function soundTest(){SV.heard=SV.heard||{};const n=SND_LIST.filter(([k])=>SV.hea
 const HELP=[['きほん','画面を ドラッグして 動く。攻撃は 装備している 武器で 自動で 出る。2分 生きのびると ボスが 出て、たおすと クリア。倒れても 経験値・仲間・装備・カードは 持ち帰れる。'],
  ['ランクと レベル','<b>勇者ランク</b>は ずっと 残る 強さ。冒険で ためた 経験値で 上がり、HPと 攻撃力が のびる（100から 先は 限界突破）。<br><b>Lv</b>は その 冒険の 中だけの 強さ。ひし形を 拾うと 上がり、強化を 1つ えらべる（設定で 自動選択にも できる）。冒険が おわると Lv1に もどる。'],
  ['技と 連携','技は 戦いの 中で ひらめく。2つの 技が 続けて 出ると 連携。技は 武器の 系統（斬・投・魔）で 出る ものが かわる。'],
- ['ジョブ','ジョブで 能力・得意武器・必殺技が かわる。ゲージが たまったら 下の ボタンで 必殺技。ジョブLvで アビリティを 覚え、マスターで 力が ずっと 残る。'],
+ ['ジョブ','ジョブで 能力・得意武器・必殺技が かわる。ゲージが たまったら 下の ボタンで 必殺技。ジョブLvで アビリティを 覚え、マスターで 力が ずっと 残る。アビリティは「アビリティ」タブで はめた ものだけ 効く（いまの ジョブの ものも 同じ）。ジョブの 基本能力は はめなくても 効く。'],
  ['仲間','ハートを 拾うと 仲間に なる。仲間は 冒険で 育ち、魂で 合体すると 強くなる。決まった 2体で 合体技。'],
  ['装備と 町','強敵・ボス・装備屋で 装備が 手に入る。効果には 品質（％）が あり、まれに 輝く 装備（×1.5）・伝説の 効果・セット装備（2つ・3つ そろうと 発動）も 出る。深淵で 拾うと 深い 層ほど 強い 深淵Lv つき。装備を ひらくと 効果を 固定して 付け直せる。精錬所で 鍛え、カードを 挿して 強くする。'],
  ['周回と やりこみ','魔界を クリアすると 次の 周回が ひらき、特典が もらえる。10周目で エンディング。その あとも まだ 先が ある。試練・目標・実績も ある。']];
@@ -1727,11 +1727,11 @@ function toggleAb(a){if(!abLearned(a))return;if(SV.abil.includes(a)){SV.abil=SV.
 function panelJob(){const j=SV.job,J=JOBS[j],S2=SV.jobs[j],ms=mastered();
  let h=subTabs(JBV,'jbv',[['now','ジョブ'],['ab','アビリティ'],['chg','転職'],['bonus','マスター'],['pw','力']]);if(JBV==='now'){h+='<h3>いまの ジョブ</h3><div class="cur">'+sprImg('hero',heroPal(),48)+'<div style="flex:1"><div style="font-size:17px">'+J.n+' <span class="tag">'+J.tier+'</span> <span style="font-size:13px;color:var(--pri-d)">Lv'+S2.lv+'/'+JOB_MAX+'</span></div><div class="hint" style="margin:0">得意武器：'+WEAP[J.w].n+'　いまの 攻撃：'+WEAP[curWeapon()].n+'（'+WTN[WEAP[curWeapon()].fam]+'）<br>'+J.base+'</div>'+(S2.lv<JOB_MAX?'<div class="bar"><i style="width:'+(S2.exp/jobNeed(S2.lv)*100)+'%"></i></div><div class="hint" style="margin:0">JP '+S2.exp+' ／ 次の Lvまで '+(jobNeed(S2.lv)-S2.exp)+'</div>':'<div class="hint" style="margin:0;color:var(--pri-d)">マスター！</div>')+'</div></div>'+
  '<p>職業技「'+J.sp+'」：'+J.spd+'</p>';
- h+='<p class="hint">ジョブLvが 上がるたびに、この ジョブの アビリティを 1つずつ 覚える（'+J.ab.filter(abLearned).length+'/10）。はめるのは「アビリティ」タブで。</p>';
+ h+='<p class="hint">ジョブLvが 上がるたびに、この ジョブの アビリティを 1つずつ 覚える（'+J.ab.filter(abLearned).length+'/10）。はめるのは「アビリティ」タブで。</p><p class="hint"><b>はめなくても 効く</b>：いまの ジョブの 基本能力・得意武器を 持つと ダメージ+10%・マスターした ジョブの 基本能力の 半分。<br><b>はめないと 効かない</b>：アビリティ（いまの ジョブの ものでも）。</p>';
  return h}
  if(JBV==='ab'){ h+='<h3>アビリティ</h3>'+apBar()+'<div class="mslots ab">'+(abActive().length?abActive().map(a=>'<button class="mslot on" data-act="abt" data-k="'+a+'"><span class="cat '+ABIL[a].c+'" style="margin:0">AP'+ABIL[a].ap+'</span><br><b>'+ABIL[a].n+'</b><br><span class="s">'+JOBS[abOwner(a)].n+'</span></button>').join(''):'<p class="hint">まだ はめていない。</p>')+'</div>'+
  '<div class="row" style="margin:6px 0"><button class="btn primary" data-act="abpick" style="flex:1">アビリティを えらぶ</button><button class="btn" data-act="abclr">すべて はずす</button></div>'+
- '<p class="hint">AP上限は 15から、ジョブを 1つ マスターする ごとに +'+AP_PER+'。すっぴんは さらに +5。おぼえた アビリティは どの ジョブでも はめられる（武器の アビリティは その武器を 持っている ときだけ 効く）。</p>';
+ '<p class="hint"><b>アビリティは はめた ものだけ 効く</b>（いまの ジョブの アビリティも はめないと 効かない）。AP上限は 15から、ジョブを 1つ マスターする ごとに +'+AP_PER+'。すっぴんは さらに +5。おぼえた アビリティは どの ジョブでも はめられる（武器の アビリティは その武器を 持っている ときだけ 効く）。</p>';
  h+='<h3>'+J.n+'の アビリティ</h3><div class="abl2">'+J.ab.map(a=>abRow(a,'abt')).join('')+'</div>';
  return h}
  if(JBV==='bonus'){ h+='<h3>マスターボーナス（'+ms.length+'/'+Object.keys(JOBS).length+'）</h3>'+(ms.length?'<div class="list">'+ms.map(k=>'<div class="li"><div class="body"><div class="t"><span>'+JOBS[k].n+'</span><span class="d">'+(k===j?'いまの ジョブ':'半分が 効く')+'</span></div><div class="d">'+JOBS[k].base+(k===j?'':'（の 半分）')+'</div></div></div>').join('')+'</div>':'<p class="hint">ジョブを Lv'+JOB_MAX+'に すると、その ジョブの 基本能力の 半分が どの ジョブでも 効く。AP上限も +'+AP_PER+'。</p>');
