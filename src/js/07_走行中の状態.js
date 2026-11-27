@@ -28,7 +28,7 @@ function startRun(mode){initAudio();mode=mode||'stage';let st=SV.sel.st,rd=SV.se
  SV.bring.filter(k=>SV.waza[k]).slice(0,bringN()).forEach(k=>{R.waza[k]={t:1}});
  if(mode==='stage'){const n=Math.min(5,(SV.lose||{})[st+'-'+rd]||0);if(n>0){R.F.dmg*=1+.05*n;R.F.taken*=1-.05*n;R.tq.push({at:.3,f:()=>banner('粘りの 手応え +'+5*n+'%','倒されるたびに、この ステージで 少し 有利に なる')})}}
  if(R.F.kimagure){const o=pick([['ダメージ+15%',F=>F.dmg*=1.15],['移動速度+15%',F=>F.spd*=1.15],['攻撃範囲+15%',F=>F.area*=1.15],['会心率+10%',F=>F.crit+=.1],['ひらめき率+50%',F=>F.hira*=1.5]]);o[1](R.F);R.tq.push({at:.5,f:()=>banner('きまぐれ！',o[0])})}
- SV.runs++;save();hud.style.display='block';jb.style.display='block';closeModal();setMode('battle');last=performance.now()}
+ SV.runs++;if(SV.runs===1)track('start','はじめて 出撃');save();hud.style.display='block';jb.style.display='block';closeModal();setMode('battle');last=performance.now()}
 function addAlly(k,until){const A=SV.allies[k],lv=A?A.lv:1,i=R.allies.length,a0=i*1.3+.6;R.allies.push({k,lv,plus:A?A.plus||0:0,evo:A?!!A.evo:false,until,x:R.x-10,y:R.y+6,a:rnd()*6,t:rnd()*2,et:rnd()*3,cd:{},ox:Math.cos(a0)*16,oy:Math.sin(a0)*10})}
 function banner(t,s){R.banner={t,s,at:R.t}}
 function spawn(k,x,y){const T=ETYPE[k],mul=(T.boss?DIF.boss:1+(R.mode==='endless'?R.t%60:R.t)*TF/60*1.2*DIF.ramp)*R.sm*DIF.hp;if(x==null){const t=dyTop()-16,b=dyBot()+16,r=rnd();let dx,dy;if(r<.35){dy=t-rnd()*30;dx=(rnd()*2-1)*halfW(dy)}else if(r<.85){dy=t+rnd()*(b-t);dx=(rnd()<.5?-1:1)*(halfW(dy)+14)}else{dy=b+rnd()*10;dx=(rnd()*2-1)*halfW(dy)}x=R.x+dx;y=R.y+dy}

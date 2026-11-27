@@ -2,3 +2,4 @@ dev.html
 sim/out/
 __pycache__/
 *.pyc
+artifact.html

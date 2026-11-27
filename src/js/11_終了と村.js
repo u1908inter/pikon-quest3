@@ -27,7 +27,7 @@ function endRun(win){if(R.over)return;const pk0=perkKeysOn();R.over=true;R.pause
  if(R.comboN)lines.push('仲間の 合体技を '+R.comboN+'回 出した');
  if(R.mode==='endless'){const ab=Math.floor(Math.max(0,R.t-(R.t0||0))/30)+(R.abyssGot||0),best=SV.endBest||0;SV.abyss=(SV.abyss||0)+ab;SV.endBest=Math.max(best,Math.floor(R.t));lines.unshift('深淵で '+fmtT(R.t)+' 生きのびた（'+(Math.floor(R.t/60)+1)+'層）'+(R.t0?'　'+Math.round(R.t0/60)+'分から もぐって '+fmtT(R.t-R.t0):'')+(R.t>best?'　最高記録！':''));lines.push('<span style="color:#8a5cc8">深淵のかけら</span>を '+ab+'こ 手に入れた')}
  if(R.mode==='trial'&&win){const today=dayKey();if(!SV.trial||SV.trial.day!==today){const mul=pOn('trial2')?2:1;SV.trial={day:today,done:1};SV.stats=SV.stats||{};SV.stats.trials=(SV.stats.trials||0)+1;SV.abyss=(SV.abyss||0)+5*mul;const c=pick(STAGES[R.st].foes.concat([STAGES[R.st].elite]));SV.cards[c]=(SV.cards[c]||0)+mul;SV.album[c]=1;SV.gold+=200*R.rd*mul;lines.unshift('試練 達成！ 深淵のかけら +'+5*mul+'・'+cardName(c)+' ×'+mul+'・'+200*R.rd*mul+'G')}else lines.unshift('試練 達成！（今日の ごほうびは 受け取りずみ）')}
- if(R.mode==='throne'&&win){SV.throneWin=(SV.throneWin||0)+1;lines.unshift('真・魔王ピコールを たおした！')}
+ if(R.mode==='throne'&&win){SV.throneWin=(SV.throneWin||0)+1;track('throne','真・魔王 撃破');lines.unshift('真・魔王ピコールを たおした！')}
  SV.stats=SV.stats||{};SV.stats.kills=(SV.stats.kills||0)+R.kills;if((R.hsSkip||0)>120&&(SV.opt.hs||'on')!=='off'&&!(SV.seen||{}).hsAdv)SV.hsAdvPend=1;if(R.mode==='endless'&&R.t0&&R.t-R.t0>=600)SV.stats.retry=1;achCheck(lines,{fast:win&&R.mode==='stage'&&R.st===5&&(SV.opt.hs||'on')==='off'&&effSpd()>=4,hira:R.hiraLog.length,maxStreak:R.maxStreak||0,win,mode:R.mode,hurtN:R.hurtN||0,bossDt:R.bossDt});
  R.hiraLog.forEach(k=>lines.push('ピコーン！ '+WAZA[k].n+'を ひらめいた'));
  if(R.rkN)lines.push('連携を '+R.rkN+'回 出した');
@@ -45,6 +45,8 @@ function endRun(win){if(R.over)return;const pk0=perkKeysOn();R.over=true;R.pause
  if(R.mode==='stage'){SV.lose=SV.lose||{};const lk=R.st+'-'+R.rd;if(win)delete SV.lose[lk];else{SV.lose[lk]=(SV.lose[lk]||0)+1;if(SV.lose[lk]>=3)stuckHints().forEach(t=>lines.push('<span style="color:#1f6fd0">💡 '+t+'</span>'))}}
  {SV.hist=SV.hist||[];SV.hist.unshift({d:Date.now(),m:R.mode,st:R.st,rd:R.rd,w:win?1:0,t:Math.floor(R.t),t0:Math.floor(R.t0||0),k:R.kills,l:R.lv,rk:SV.lv});if(SV.hist.length>100)SV.hist.length=100;
   const B=SV.bests=SV.bests||{};B.kills=Math.max(B.kills||0,R.kills);B.streak=Math.max(B.streak||0,R.maxStreak||0);B.runLv=Math.max(B.runLv||0,R.lv);if(win&&R.bossDt!=null)B.boss=Math.min(B.boss||9999,R.bossDt);B.rank=Math.max(B.rank||0,SV.lv);if(R.mode==='endless')B.dive=Math.max(B.dive||0,Math.floor(R.t-(R.t0||0)))}
+ if(win&&R.mode==='stage'){const SN=['草原','森','洞窟','砂漠','雪山','魔界'];if(R.rd===1)track('s'+R.st,SN[R.st]+' 1周目 クリア');if(R.st===5){track('r'+R.rd,R.rd+'周目 魔界 クリア');if(R.rd>=10)track('ending','魔王 撃破（エンディング）')}}
+ if(R.mode==='endless')for(let m=5;m*60<=(SV.endBest||0)&&m<=200;m+=5)track('a'+m,'深淵 '+m+'分');
  if(win)SV.clears++;SV.best=Math.max(SV.best,Math.floor(R.t));save();
  goalNews().forEach(t=>lines.push('<span style="color:#2a8a4a">◎ 目標「'+t+'」を たっせい！（出撃タブで 受け取れる）</span>'));save();
  const mm=Math.floor(R.t/60)+':'+String(Math.floor(R.t%60)).padStart(2,'0');

@@ -14,7 +14,7 @@
 |---|---|
 | `src/shell.html` | HTML と CSS（スクリプトの場所に `/*@@JS@@*/` の目印） |
 | `src/js/*.js` | ゲームのスクリプト。`src/js/ORDER.txt` の順に つなげる |
-| `build.py` | ビルド。`python3 build.py` で `index.html`（公開用）、`--dev` で `dev.html`（テスト用） |
+| `build.py` | ビルド。`python3 build.py` で `index.html`（GitHub Pages 用・アクセス解析あり）と `artifact.html`（アクセス解析なし）、`--dev` で `dev.html`（テスト用） |
 | `bgm/` | BGM（草原・森・洞窟・砂漠・雪山・魔界・拠点） |
 | `tests/` | 自動テスト（Playwright）。`sh tests/run_all.sh` |
 | `sim/` | バランスの シミュレーション（自動プレイ） |
@@ -25,6 +25,23 @@
 2. `python3 build.py --dev` で `dev.html` を作って動作確認
 3. `sh tests/run_all.sh` でテスト（`pip install playwright && playwright install chromium` が 必要）
 4. `python3 build.py` で `index.html` を作って公開
+
+## 公開とアクセス解析
+
+GitHub Pages（main ブランチの ルート）で `index.html` を 公開する。`index.html` には GoatCounter（`u1908inter.goatcounter.com`）の 計測タグが 入る。
+
+ゲームの 中では、各イベントを セーブごとに 1回だけ 送る（パスは `pq3-〇〇`。github.io 以外から 遊ばれたときは `pq3-x-〇〇`、PLiCy は `pq3-plicy-〇〇`）。デバッグ用の セーブでは 送らない。
+
+| パス | 内容 |
+|---|---|
+| `start` | はじめて 出撃 |
+| `s0`〜`s5` | 各ステージ 1周目 クリア |
+| `r1`〜`r10`… | 魔界 ○周目 クリア |
+| `ending` | 魔王 撃破（10周目・エンディング） |
+| `a5`, `a10`, … | 無限の深淵 ○分 到達（5分 ごと） |
+| `throne` | 真・魔王 撃破 |
+| `err12345` | エラー（メッセージごとに 番号） |
+| `savefail-…` | セーブ失敗 |
 
 ## バランスの シミュレーション
 

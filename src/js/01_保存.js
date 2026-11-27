@@ -11,7 +11,9 @@ migrateSave();
 let lastSave=0,_saveWarned=false,_saveErr='';
 function saveNow(){if(window._noSave)return true;try{_saveErr='';localStorage.setItem(KEY,JSON.stringify(SV));lastSave=Date.now();return true}catch(e){_saveErr=(e&&e.name)||'err';saveFailed();return false}}
 const save=()=>{saveNow()};
-function saveFailed(){if(_saveWarned)return;_saveWarned=true;try{toast('セーブに 失敗した。設定の「書き出す」で バックアップしてね')}catch(_){}}
+/* アクセス解析（GitHub Pages の 公開版だけ。セーブごとに 1回ずつ 送る） */
+function track(k,title){try{const gc=window.goatcounter;if(!gc||typeof gc.count!=='function'||SV.debug)return;SV.trk=SV.trk||{};if(SV.trk[k])return;SV.trk[k]=1;const h=location.hostname,site=h.includes('github.io')?'':h.includes('plicy')?'plicy-':'x-';gc.count({path:'pq3-'+site+k,title:'PQ3 '+title,event:true})}catch(_){}}
+function saveFailed(){try{track('savefail-'+(_saveErr||'x'),'セーブ失敗 v'+GAME_VER+' '+(_saveErr||''))}catch(_){}if(_saveWarned)return;_saveWarned=true;try{toast('セーブに 失敗した。設定の「書き出す」で バックアップしてね')}catch(_){}}
 function manualSave(){let ok=true;try{ok=saveNow()&&localStorage.getItem(KEY)===JSON.stringify(SV)}catch(e){ok=false}
  if(ok)toast('セーブした（'+new Date().toLocaleTimeString('ja-JP')+'）');
  else toast('セーブできなかった（'+(/quota/i.test(_saveErr)?'ブラウザの 保存場所が いっぱい':'この 画面では 保存が つかえない')+'）。設定の「書き出す」で バックアップしてね');
