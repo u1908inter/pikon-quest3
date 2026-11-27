@@ -36,9 +36,11 @@ function step(dt){R.t+=dt;R.inv-=dt;R.vampB=Math.min(6,R.vampB+dt*6);for(const q
   let dx=R.x-e.x,dy=R.y-e.y;const l=Math.hypot(dx,dy)||1,still=stopped||e.stun>0||e.sleep>0||e.charging>0;if(R.F.kiss&&l<22&&!e.kissed&&!e.T.boss){e.kissed=1;e.stun=Math.max(e.stun||0,.8);R.pops.push({x:e.x,y:e.y-10,txt:'♥',c:'#ff8ae6',t:R.t})}
   if(e.k==='bat'){e.ph+=dt*6;dx+=Math.cos(e.ph)*l*.4;dy+=Math.sin(e.ph)*l*.4}
   const l2=Math.hypot(dx,dy)||1,slw=R.F.slowAura&&l<55?.55:1,tvx=still?0:dx/l2*e.spd*slw,tvy=still?0:dy/l2*e.spd*slw,fast=e.vx*e.vx+e.vy*e.vy>e.spd*e.spd*4;
-  const a2=Math.min(1,dt*(fast?3.5:6));e.vx+=(tvx-e.vx)*a2;e.vy+=(tvy-e.vy)*a2;e.x+=e.vx*dt;e.y+=e.vy*dt;
+  const a2=Math.min(1,dt*(fast?3.5:6));e.vx+=(tvx-e.vx)*a2;e.vy+=(tvy-e.vy)*a2;
+  if(fast){e.flyT=R.t;if(l<60&&!e.T.boss){const pu=(60-l)/60*900*dt;e.vx-=dx/l*pu;e.vy-=dy/l*pu}}else if(R.t-(e.flyT||-9)<.45&&l<34&&!e.T.boss){e.x-=dx/l*40*dt;e.y-=dy/l*40*dt}
+  e.x+=e.vx*dt;e.y+=e.vy*dt;
   if(still)continue;
-  if(l<e.T.r+5&&R.inv<=0){hurtHero(e.dmg,e);const kb=180/(e.T.m||1);e.vx-=dx/l*kb;e.vy-=dy/l*kb}
+  if(l<e.T.r+5&&R.inv<=0&&!fast&&R.t-(e.flyT||-9)>=.35){hurtHero(e.dmg,e);const kb=180/(e.T.m||1);e.vx-=dx/l*kb;e.vy-=dy/l*kb}
   if(l>700&&!e.T.boss&&!e.T.elite)e.dead=true}
  R.en=R.en.filter(e=>!e.dead);collide();
  for(const e of R.en){if(e.T.boss)continue;const v2=e.vx*e.vx+e.vy*e.vy;if(v2<120*120)continue;wallBounce(e,.8,Math.sqrt(v2))}

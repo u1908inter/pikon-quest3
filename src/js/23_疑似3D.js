@@ -121,7 +121,7 @@ function draw(){tg.clearRect(0,0,tx.width,tx.height);ANC=Math.round(VH*.6);const
  for(const e of R.en){if(e.charging>0){const[x,y,p]=P(e.x,e.y);g.fillStyle='rgba(255,60,60,'+(.22+.18*Math.sin(R.t*20))+')';g.beginPath();g.ellipse(x,y,80*p,80*p*.7,0,0,7);g.fill()}}
  for(const s of R.shots)if(s.k==='ring'){const[x,y,p]=P(s.x,s.y),a=1-s.t/s.life,r=s.r*(.6+.4*s.t/s.life)*p;g.strokeStyle='rgba('+s.c+','+a+')';g.lineWidth=2;g.beginPath();g.ellipse(x,y,r,r*.7,0,0,7);g.stroke()}
  // 奥から順に描く
- if(SV.opt.foeRing!==false)for(const e of R.en){if(e.dead||!inView(e,24))continue;const[x,y,p]=P(e.x,e.y),s=12*(e.T.sc||1)*p,i=e.T.boss?2:e.T.elite?1:0,rx=Math.max(4,e.T.r*p*.9),ry=Math.max(1.6,e.T.r*p*.36),c=ringSpr(rx,ry,i);g.drawImage(c,Math.round(x)-c.width/2,Math.round(y+s/2-1)-c.height/2)}
+ if(SV.opt.foeRing!==false)for(const e of R.en){if(e.dead||!inView(e,24))continue;g.globalAlpha=R.t-(e.flyT||-9)<.35?.18:1;const[x,y,p]=P(e.x,e.y),s=12*(e.T.sc||1)*p,i=e.T.boss?2:e.T.elite?1:0,rx=Math.max(4,e.T.r*p*.9),ry=Math.max(1.6,e.T.r*p*.36),c=ringSpr(rx,ry,i);g.drawImage(c,Math.round(x)-c.width/2,Math.round(y+s/2-1)-c.height/2)}g.globalAlpha=1;
  for(const e of R.en)if(inView(e,24))L.push({y:e.y,e});
  for(const c of R.corpses)if(inView(c,40))L.push({y:c.y,c});
  for(const a of R.allies)L.push({y:a.y,a});
@@ -162,7 +162,7 @@ function draw(){tg.clearRect(0,0,tx.width,tx.height);ANC=Math.round(VH*.6);const
  for(const q of R.parts){const[x,y]=P(q.x,q.y);g.fillStyle=q.c;g.globalAlpha=1-q.t/q.life;g.fillRect(Math.round(x),Math.round(y-4),2,2)}g.globalAlpha=1;
  g.globalAlpha=1;
  /* 近くの 敵の 印と ゆうしゃを いちばん 上に（仲間や 攻撃に かくれないように） */
- if(SV.opt.foeRing!==false)for(const e of R.en){if(e.dead||Math.abs(e.x-R.x)>44||Math.abs(e.y-R.y)>44)continue;const dd=Math.hypot(e.x-R.x,e.y-R.y);if(dd>44)continue;const[x,y,p]=P(e.x,e.y),s=12*(e.T.sc||1)*p,i=e.T.boss?2:e.T.elite?1:0,c=ringSpr(Math.max(4,e.T.r*p*.9),Math.max(1.6,e.T.r*p*.36),i);g.globalAlpha=dd<24?1:.75;g.drawImage(c,Math.round(x)-c.width/2,Math.round(y+s/2-1)-c.height/2)}
+ if(SV.opt.foeRing!==false)for(const e of R.en){if(e.dead||Math.abs(e.x-R.x)>44||Math.abs(e.y-R.y)>44||R.t-(e.flyT||-9)<.35)continue;const dd=Math.hypot(e.x-R.x,e.y-R.y);if(dd>44)continue;const[x,y,p]=P(e.x,e.y),s=12*(e.T.sc||1)*p,i=e.T.boss?2:e.T.elite?1:0,c=ringSpr(Math.max(4,e.T.r*p*.9),Math.max(1.6,e.T.r*p*.36),i);g.globalAlpha=dd<24?1:.75;g.drawImage(c,Math.round(x)-c.width/2,Math.round(y+s/2-1)-c.height/2)}
  g.globalAlpha=1;
  {const[x,y,p]=P(R.x,R.y);shadow(x,y+5*p,10,p);const jz=R.t-(R.jumpAt||-9)<.4?Math.sin((R.t-R.jumpAt)/.4*Math.PI)*30*p:0;if(R.t<(R.ghostT||0))g.globalAlpha=.4;drawAura(x,y+6*p-jz,p,R.t);if(!(R.inv>0&&R.t>=(R.sinvT||0)&&Math.floor(R.t*20)%2))drawSpr('hero',heroPal(),x,y+6*p-jz,p,R.face<0);g.globalAlpha=1;if(R.clones){g.globalAlpha=.45;for(const[cx,cy]of R.clones){const[a1,b1,p1]=P(cx,cy);drawSpr('hero',heroPal(),a1,b1+6*p1,p1,R.face<0)}g.globalAlpha=1}if(R.blades)for(const[bx,by,ba]of R.blades){const[a1,b1,p1]=P(bx,by);g.save();g.translate(Math.round(a1),Math.round(b1-8*p1));g.rotate(ba);g.fillStyle='#ffd34e';g.fillRect(-5*p1,-1,10*p1,2);g.restore()}
    if(R.t-R.bulb<1.6){const bx=x,by=y-14-Math.min(4,(R.t-R.bulb)*12);g.fillStyle='#ffef5a';g.fillRect(bx-3,by-4,6,6);g.fillStyle='#fff';g.fillRect(bx-1,by-3,2,2);g.fillStyle='#aaa';g.fillRect(bx-2,by+2,4,2)}
