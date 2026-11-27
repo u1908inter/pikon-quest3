@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ピコーン・クエスト3 のビルド。
 src/shell.html に src/js/ の各ファイル（ORDER.txt の順）を埋めこんで 1つの HTML に する。
-  python3 build.py        → index.html（GitHub Pages 用。アクセス解析 GoatCounter あり）
+  python3 build.py        → index.html（紹介ページ）と pikon-quest3.html（ゲーム。GitHub Pages 用、アクセス解析 GoatCounter あり）
                              artifact.html（Claude の アーティファクト用。アクセス解析なし）
                              dist/plicy/ と dist/pikon-quest3-plicy.zip（PLiCy 投稿用。HTML・game.js・BGM）
   python3 build.py --dev  → dev.html（テスト用。window.PQ3.ev が 使える）
@@ -20,7 +20,8 @@ def wr(name,h):
 if '--dev' in sys.argv: wr('dev.html',html.replace('<!--GC-->',''))
 else:
     rel=html.replace(DEV,REL)
-    wr('index.html',rel.replace('<!--GC-->',GC))
+    wr('pikon-quest3.html',rel.replace('<!--GC-->',GC))
+    wr('index.html',open(os.path.join(D,'src/intro.html'),encoding='utf-8').read().replace('<!--GC-->',GC))
     wr('artifact.html',rel.replace('<!--GC-->',''))
     # PLiCy 用: HTML は 軽く、中身は game.js に。BGM は mp3 の まま
     import shutil,zipfile,hashlib

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ピコーン・クエスト3</title>
+<meta name="author" content="u1908inter">
+<meta name="theme-color" content="#1d1726">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="canonical" href="https://u1908inter.github.io/pikon-quest3/">
+<meta name="description" content="押しよせる敵を 自動攻撃で なぎはらいながら、装備を 集めて 鍛える。ハクスラ要素の 強い、ヴァンサバ風の ドット絵アクション。ブラウザで 無料・ダウンロード不要。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ピコーン・クエスト3">
+<meta property="og:title" content="ピコーン・クエスト3">
+<meta property="og:description" content="押しよせる敵を 自動攻撃で なぎはらいながら、装備を 集めて 鍛える。ハクスラ要素の 強い、ヴァンサバ風の ドット絵アクション。ブラウザで 無料・ダウンロード不要。">
+<meta property="og:url" content="https://u1908inter.github.io/pikon-quest3/">
+<meta property="og:image" content="https://u1908inter.github.io/pikon-quest3/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<!--GC-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+1p:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#1d1726; --bg2:#271f33; --card:#2f2640; --ink:#f3ecdf; --ink2:#b9adc6; --line:#463a58;
+  --gold:#f2b13c; --frame:#0f0b14; --purple:#a77bf0; --red:#ff6b57; --green:#5fd38a;
+  --f-dot:'DotGothic16','MS Gothic',ui-monospace,monospace;
+  --f-body:'M PLUS 1p','Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.85;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3,.dot{font-family:var(--f-dot);font-weight:400;text-wrap:balance}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px}
+
+/* hero */
+.hero{padding-block:44px 32px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px;align-items:center}
+.brand{display:flex;flex-direction:column;gap:18px}
+.icon{width:88px;height:88px;image-rendering:pixelated;border:4px solid var(--frame);border-radius:20px}
+h1{font-size:clamp(40px,6.4vw,66px);line-height:1.08;margin:0;letter-spacing:.02em}
+h1 .three{color:var(--gold)}
+.lead{font-size:18px;margin:0;color:var(--ink2);max-width:30em}
+.lead b{color:var(--ink);font-weight:700}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{font-family:var(--f-dot);font-size:22px;display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  padding:12px 26px;border-radius:14px;border:4px solid var(--frame);background:var(--gold);color:#2b1d14;box-shadow:0 5px 0 var(--frame);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--frame)}
+.btn.sub{background:var(--card);color:var(--ink);font-size:18px;padding:10px 20px}
+.note{font-size:13px;color:var(--ink2);margin:0}
+.phones{display:flex;gap:14px;justify-content:center}
+.phone{border:5px solid var(--frame);border-radius:22px;overflow:hidden;background:#000;box-shadow:0 10px 0 rgba(0,0,0,.35)}
+.phone img{display:block;width:100%;height:auto}
+.phones .phone{width:46%}
+.phones .phone:last-child{margin-top:34px}
+
+/* sections */
+section{padding-block:34px;border-top:2px dashed var(--line)}
+h2{font-size:clamp(24px,3.4vw,32px);margin:0 0 18px}
+h2 small{display:block;font-family:var(--f-body);font-size:15px;color:var(--ink2);margin-top:4px}
+.feat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:3px solid var(--frame);border-radius:16px;padding:18px 18px 14px}
+.card h3{font-size:21px;margin:0 0 8px;line-height:1.35}
+.card h3 .k{display:inline-block;font-size:13px;color:var(--bg);background:var(--gold);border-radius:6px;padding:0 6px;margin-bottom:6px}
+.card p{margin:0 0 10px;color:var(--ink2);font-size:15px}
+.card ul{margin:0;padding-left:1.2em;font-size:14.5px}
+.card li{margin:2px 0}
+.card.c2 h3 .k{background:var(--purple)}
+.card.c3 h3 .k{background:var(--red)}
+
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:30px;align-items:center;margin-top:8px}
+.split.rev{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+.split.rev .shot{order:2}
+.shot{max-width:320px;margin:0 auto}
+.split p{margin:0 0 12px}
+.split .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tag{font-size:13px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--ink2)}
+.q{color:var(--ink2);font-size:14px}
+
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ol.steps li{counter-increment:s;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px 12px 52px;position:relative;font-size:15px}
+ol.steps li::before{content:counter(s);position:absolute;left:14px;top:10px;font-family:var(--f-dot);font-size:24px;color:var(--gold)}
+.keys{font-size:14px;color:var(--ink2);margin-top:12px}
+kbd{font-family:var(--f-dot);background:var(--bg2);border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:0 6px;font-size:13px;color:var(--ink)}
+
+details{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 2px;color:var(--ink2);font-size:15px}
+.news li{margin:4px 0;font-size:15px}
+.news b{font-family:var(--f-dot);font-weight:400;color:var(--gold)}
+.go{text-align:center}
+.go p{color:var(--ink2)}
+footer{padding-block:26px 40px;border-top:2px dashed var(--line);text-align:center;font-size:13px;color:var(--ink2)}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;padding-top:28px;gap:26px}
+  .feat{grid-template-columns:1fr}
+  .split,.split.rev{grid-template-columns:1fr;gap:16px}
+  .split.rev .shot{order:0}
+  ol.steps{grid-template-columns:1fr}
+  .shot{max-width:280px}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="brand">
+    <img class="icon" src="assets/icon.png" alt="" width="88" height="88">
+    <h1>ピコーン・<br>クエスト<span class="three">3</span></h1>
+    <p class="lead">押しよせる敵を <b>自動攻撃で なぎはらいながら</b>、拾った装備を <b>くらべて 鍛えて 強くなる</b>。ハクスラ要素の 強い、ヴァンサバ風の ドット絵アクションです。</p>
+    <div class="ctas">
+      <a class="btn" href="pikon-quest3.html">▶ ブラウザで あそぶ</a>
+    </div>
+    <p class="note">無料・ダウンロード不要。スマホの 縦画面向け（パソコンでも あそべます）。</p>
+  </div>
+  <div class="phones" aria-hidden="true">
+    <div class="phone"><img src="assets/battle.png" alt="" width="390" height="780"></div>
+    <div class="phone"><img src="assets/abyss.png" alt="" width="390" height="780"></div>
+  </div>
+</header>
+
+<section aria-labelledby="f-h">
+  <h2 id="f-h">どんな ゲーム？</h2>
+  <div class="feat">
+    <article class="card c1">
+      <h3><span class="k">ヴァンサバ風</span><br>操作は 移動だけ</h3>
+      <p>攻撃は 自動。敵の 群れの 中を 動きまわり、レベルアップの たびに 強化を えらんで 2分 生きのびると ボス戦です。</p>
+      <ul>
+        <li>戦いの 中で 技を 「ピコーン！」と ひらめく</li>
+        <li>技が 続けて 出ると 連携に なる</li>
+        <li>倒した 敵が 仲間に なって いっしょに 戦う</li>
+      </ul>
+    </article>
+    <article class="card c2">
+      <h3><span class="k">ハクスラ</span><br>装備を 厳選する</h3>
+      <p>強敵や ボスが 落とす 装備は、同じ 名前でも 中身が ちがいます。いい 1本を 探して、育てる ゲームです。</p>
+      <ul>
+        <li>効果ごとに 品質（％）が ある</li>
+        <li>まれに 出る 輝く装備・伝説の効果・セット装備</li>
+        <li>効果の 付け直し・精錬・カードで 仕上げる</li>
+      </ul>
+    </article>
+    <article class="card c3">
+      <h3><span class="k">エンドコンテンツ</span><br>終わりの ない 深淵</h3>
+      <p>魔界を 10周 すると エンディング。その 先に、時間制限の ない「無限の深淵」が ひらきます。</p>
+      <ul>
+        <li>深く もぐるほど 敵が 強くなる</li>
+        <li>深い 層の 装備ほど 性能が 高い</li>
+        <li>勇者ランクと 祭壇の 強化は 上限なし</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="g-h">
+  <h2 id="g-h">拾って、くらべて、仕上げる<small>装備まわりの くわしい 話</small></h2>
+  <div class="split">
+    <div class="shot"><div class="phone"><img src="assets/gear.png" alt="装備の 詳細画面。効果ごとの 品質、深淵Lv、伝説の効果、セット効果、効果の 付け直しボタンが 並んでいる" width="390" height="780" loading="lazy"></div></div>
+    <div>
+      <p>武器は 剣・刀・斧・槍・弓・ブーメラン・杖・竪琴など 13種。持つ 武器で 攻撃の 形と ひらめく 技が かわります。</p>
+      <p>装備の 効果は 拾うたびに 数値が ちがい、品質（％）で 当たり外れが 見えます。全部の 効果が 高い「完璧」や、性能 1.5倍の「輝く」装備は めったに 出ません。</p>
+      <p>伝説の 装備には「技が 30%で もう1回 出る」のような 動きの かわる 効果が つくことが あり、セット装備は 2つ・3つ そろえると 効果が 出ます。気に入った 効果を 固定して 残りを 引き直す「付け直し」も あります。</p>
+      <p class="q">持てる 数は 進めるほど 増え、欲しい 効果を 登録しておくと 拾ったときに 知らせてくれます。</p>
+      <div class="tags"><span class="tag">品質</span><span class="tag">輝く装備</span><span class="tag">伝説の効果</span><span class="tag">セット装備</span><span class="tag">深淵Lv</span><span class="tag">付け直し</span><span class="tag">精錬</span><span class="tag">カード</span><span class="tag">ユニークの力</span><span class="tag">神器</span></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="d-h">
+  <h2 id="d-h">10周の 先へ<small>周回と 無限の深淵</small></h2>
+  <div class="split rev">
+    <div class="shot"><div class="phone"><img src="assets/camp.png" alt="拠点の 画面。無限の深淵の 最高記録と、5分ごとに 途中から もぐれる ボタンが 並んでいる" width="390" height="780" loading="lazy"></div></div>
+    <div>
+      <p>6つの ステージを 魔界まで 進むと 1周。周回を 重ねるほど 敵は 強くなり、周回ごとに 特典が ひらきます（どんな 特典かは ひらくまで ひみつ）。</p>
+      <p>10周目で エンディングを 見たあとは「無限の深淵」へ。1分ごとに 層が 深くなり、毎分 ボスが あらわれます。どこまで 生きのびたかが 記録に なり、到達した 深さで さらに 特典が ひらきます。</p>
+      <p>深淵で 集めた かけらは 祭壇に ささげて、ずっと 残る 強化に。勇者ランクにも 上限は ありません。いちど たどりついた 深さからは 5分 きざみで 途中から もぐれます。</p>
+      <p class="q">目安として、エンディングまで 数時間、深淵の 奥を めざすと 数十時間 あそべる 作りです（あそび方で かわります）。</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-h">
+  <h2 id="h-h">あそびかた</h2>
+  <ol class="steps">
+    <li>画面を ドラッグして 動く。攻撃は 自動で 出ます。</li>
+    <li>敵が 落とす ひし形を 拾って レベルアップ。強化を 1つ えらびます（自動でも えらべます）。</li>
+    <li>2分 生きのびると ボス。倒せば ステージ クリア。倒れても、経験値・仲間・装備は 持ち帰れます。</li>
+    <li>拠点で 装備・ジョブ・仲間を ととのえて、また 出撃。わからなく なったら 設定の「あそびかた」へ。</li>
+  </ol>
+  <p class="keys">パソコンでは <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> か 矢印キーで 移動、<kbd>Space</kbd> で 必殺技、<kbd>Esc</kbd> で 一時停止。</p>
+</section>
+
+<section aria-labelledby="n-h">
+  <h2 id="n-h">更新履歴</h2>
+  <ul class="news">
+    <li><b>0.9.4</b>（2026-11-27）一時停止の 画面で 画面の ゆれ・ヒットストップを かえられるように</li>
+    <li><b>0.9.3</b>（2026-11-27）吹っ飛ばされている 敵には 当たらないように</li>
+    <li><b>0.9.2</b>（2026-11-27）勇者を いちばん 手前に。近くの 敵を 目立たせる</li>
+    <li><b>0.9.1</b>（2026-11-27）体力ゲージを 見やすく。倒された 原因を 表示</li>
+    <li><b>0.9.0</b>（2026-11-27）公開</li>
+  </ul>
+</section>
+
+<section aria-labelledby="q-h">
+  <h2 id="q-h">よくある しつもん</h2>
+  <details><summary>お金は かかりますか？</summary><p>かかりません。広告も ありません。</p></details>
+  <details><summary>セーブは どうなりますか？</summary><p>あそんでいる ブラウザに 自動で 保存されます。べつの 端末に うつすときは、設定の「書き出す」で 出た 文字を、うつしたい 端末の「読みこむ」に はりつけてください。</p></details>
+  <details><summary>前作を 知らなくても あそべますか？</summary><p>あそべます。<a href="https://u1908inter.github.io/pikon-quest2/">ピコーン・クエスト2</a> は タップで 連撃する バトルRPGで、あそびの 形が ちがいます。</p></details>
+  <details><summary>動きが 重いときは？</summary><p>設定 → 動作・画面 の「演出の 重さ」を 軽量に するか、「30fpsで 動かす」を オンに してください。画面の ゆれや ヒットストップも ここで かえられます。</p></details>
+</section>
+
+<section class="go" aria-labelledby="go-h">
+  <h2 id="go-h">さっそく 出撃しよう</h2>
+  <p>インストールも 登録も いりません。</p>
+  <a class="btn" href="pikon-quest3.html">▶ ブラウザで あそぶ</a>
+</section>
+
+<footer>
+  ピコーン・クエスト3 ／ 作者：u1908inter ／ <a href="https://github.com/u1908inter/pikon-quest3">GitHub</a>
+</footer>
+</div>
+</body>
+</html>
