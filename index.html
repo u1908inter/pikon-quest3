@@ -54,7 +54,7 @@ h1 .three{color:var(--gold)}
 .pill2{display:flex;flex-wrap:wrap;gap:8px;margin:0}.pill2 span{font-family:var(--f-dot);font-size:17px;background:var(--card);border:2px solid var(--gold);border-radius:999px;padding:3px 14px}.pill2 span:first-child{background:var(--gold);color:#2b1d14;border-color:var(--frame)}
 .phones{display:flex;gap:14px;justify-content:center}
 .phone{border:5px solid var(--frame);border-radius:22px;overflow:hidden;background:#000;box-shadow:0 10px 0 rgba(0,0,0,.35)}
-.phone img{display:block;width:100%;height:auto}
+.phone img,.phone video{display:block;width:100%;height:auto}
 .phones .phone{width:46%}
 .phones .phone:last-child{margin-top:34px}
 
@@ -122,8 +122,8 @@ footer{padding-block:26px 40px;border-top:2px dashed var(--line);text-align:cent
     <p class="note">無料・ダウンロード不要。スマホの 縦画面向け（パソコンでも あそべます）。</p>
   </div>
   <div class="phones" aria-hidden="true">
-    <div class="phone"><img src="assets/battle.png" alt="" width="390" height="780"></div>
-    <div class="phone"><img src="assets/boss.png" alt="" width="390" height="780"></div>
+    <div class="phone"><video src="assets/battle.mp4" poster="assets/battle.jpg" autoplay muted loop playsinline width="360" height="720"></video></div>
+    <div class="phone"><video src="assets/boss.mp4" poster="assets/boss.jpg" autoplay muted loop playsinline width="360" height="720"></video></div>
   </div>
 </header>
 

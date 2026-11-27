@@ -29,4 +29,4 @@ async def main():
         await pg.wait_for_timeout(300);await shot('gear.png')
         await fresh("closeModal();TAB='go';GOV='stage';renderCamp()");await pg.wait_for_timeout(1500);await shot('camp.png')
         await b.close()
-asyncio.run(main())
+if __name__=="__main__":asyncio.run(main())

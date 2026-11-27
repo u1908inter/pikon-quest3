@@ -13,7 +13,7 @@
 | 場所 | 中身 |
 |---|---|
 | `src/intro.html` | 紹介ページ（`index.html` に なる） |
-| `assets/` | 紹介ページの 画像（アイコン・OGP・スクリーンショット。`tools/shots.py` で 撮りなおせる） |
+| `assets/` | 紹介ページの 画像と 動画（アイコン・OGP・スクリーンショット・プレイ動画。`tools/shots.py`・`tools/videos.py` で 撮りなおせる） |
 | `src/shell.html` | HTML と CSS（スクリプトの場所に `/*@@JS@@*/` の目印） |
 | `src/js/*.js` | ゲームのスクリプト。`src/js/ORDER.txt` の順に つなげる |
 | `build.py` | ビルド。`python3 build.py` で `index.html`（GitHub Pages 用・アクセス解析あり）と `artifact.html`（アクセス解析なし）、`--dev` で `dev.html`（テスト用） |
