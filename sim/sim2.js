@@ -25,7 +25,7 @@ window.SIM={
   if(best&&nd>40){mx=mx*.3+(best.x-R.x)/bd;my=my*.3+(best.y-R.y)/bd}
   if(R.y>140)my-=.5;if(R.y<-140)my+=.5;if(R.x>180)mx-=.5;if(R.x<-180)mx+=.5;
   const ml=Math.hypot(mx,my);stick.x=ml?mx/ml:0;stick.y=ml?my/ml:0;SIM.sd=[stick.x,stick.y]},
- run(st,rd,mode,sm){SV.sel={st,rd};SV.opt.autoLv=true;SV.opt.hs='off';closeModal();setMode('camp');if(mode==='endless')startAbyss(sm||0);else startRun(mode);const dt=1/40;let n=0,minHp=1;const t0=R.t;
+ run(st,rd,mode,sm){window.NOFREEZE=1;SV.sel={st,rd};SV.opt.autoLv=true;SV.opt.hs='off';closeModal();setMode('camp');if(mode==='endless')startAbyss(sm||0);else startRun(mode);const dt=1/40;let n=0,minHp=1;const t0=R.t;
   while(!R.over&&R.t-t0<(mode==='endless'?6000:400)&&n<40*7000){n++;SIM.steer();
    if(R.hs>0)R.hs-=dt;else if(R.slow>0){R.slow-=dt;step(dt*.18)}else step(dt);
    while(R.queue>0&&!R.over)levelUp();if(R.jg>=1&&!R.over)jobSkill();

@@ -7,7 +7,7 @@ async def main():
         await pg.route('**/fonts.*/**',lambda r:r.abort())
         await pg.goto('http://localhost:8766/dev.html')
         await pg.evaluate("window._noSave=1;localStorage.setItem('pq3-vs',JSON.stringify({opt:{sound:true,zoom:true,tips:false},lv:60,runs:30,clears:20,gold:200000,job:'kenshi',jobs:{kenshi:{lv:10,exp:0},mahou:{lv:10,exp:0}},clear:[10,10,10,10,10,10],allies:{slime:{lv:20,exp:0},king:{lv:20,exp:0}},party:['slime','king'],up:{atk:5,hp:5,spd:5,slot:4},waza:{kabuto:{star:6,exp:0}},abyss:100,endBest:1300}))")
-        await pg.reload();await pg.wait_for_timeout(400)
+        await pg.reload();await pg.wait_for_timeout(400);await pg.evaluate('window.NOFREEZE=1')
         print('ach',await pg.evaluate("PQ3.ev('JSON.stringify(Object.keys(SV.ach||{}))')"))
         # tabs
         for t in ['go','rec','town','cfg']:

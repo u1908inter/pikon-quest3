@@ -1,4 +1,11 @@
 /* ---------- 終了と村 ---------- */
+function deathReport(){const lh=R.lastHit,L=R.dmgLog||[],F5=L.filter(x=>x.t>=R.t-5),sum5=F5.reduce((a,x)=>a+x.d,0),big=L.reduce((a,x)=>Math.max(a,x.d),0);if(!lh)return '';
+ const top=Object.entries(R.dmgBy||{}).sort((a,b)=>b[1][0]-a[1][0]).slice(0,3);const tips=[];
+ if(lh.k==='blast')tips.push('ボスの 大技（「ためている！」の あとに 赤い 輪が ひろがる）に まきこまれた。ためている 間は はなれよう');
+ if(big>=R.max*.4)tips.push('1回で 最大HPの '+Math.round(big/R.max*100)+'% を うけた。HPを ふやす（いのちの像・守護セット・HPの 効果）か、受ける ダメージを へらそう');
+ if(F5.length>=5)tips.push('最後の 5秒で '+F5.length+'回 ぶつかった。かこまれる 前に、敵の すくない ほうへ 動こう');
+ if(lh.src.includes('強敵'))tips.push('強敵は 足もとが オレンジの 点線の 輪。攻撃が 強いので 近づきすぎないように');
+ return '<div style="text-align:left;background:#fff2f0;border:2px solid #e0302a;border-radius:8px;padding:6px 8px;margin:6px 0"><div style="color:#c0392b;font-weight:bold">倒された 原因</div><div>'+lh.src+(lh.k==='blast'?'の 大技':'に ぶつかった')+'　<b>-'+lh.d+'</b>（のこり HP '+Math.max(0,Math.ceil(lh.hp0))+' → 0）</div><div class="hint">最後の 5秒で 受けた ダメージ '+sum5+'（'+F5.length+'回）／ 最大HP '+Math.round(R.max)+'</div>'+(top.length?'<div class="hint">受けた ダメージ：'+top.map(([n,[d,c]])=>n+' '+d+'（'+c+'回）').join('・')+'</div>':'')+(tips.length?'<div style="color:#1f6fd0;margin-top:3px">'+tips.slice(0,2).map(t=>'💡 '+t).join('<br>')+'</div>':'')+'</div>'}
 function stuckHints(){const o=[];try{
  if(SV.inv.some(it=>!it.a&&statScore(it)>statScore(eqOf(it.slot))))o.push('もっと 強い 装備を 持っている。装備タブの「おすすめ装備」を ためそう');
  if(Object.keys(UPS).some(k=>SV.up[k]<UPS[k].max&&SV.gold>=upCost(k)))o.push('町の「施設」を 強化できる');
@@ -41,5 +48,5 @@ function endRun(win){if(R.over)return;const pk0=perkKeysOn();R.over=true;R.pause
  if(win)SV.clears++;SV.best=Math.max(SV.best,Math.floor(R.t));save();
  goalNews().forEach(t=>lines.push('<span style="color:#2a8a4a">◎ 目標「'+t+'」を たっせい！（出撃タブで 受け取れる）</span>'));save();
  const mm=Math.floor(R.t/60)+':'+String(Math.floor(R.t%60)).padStart(2,'0');
- modal('<h2>'+(R.mode==='endless'?'深淵で 力つきた…':win?(R.mode==='trial'?'試練 クリア！':R.mode==='throne'?'玉座 制覇！':'ステージ クリア！'):'力つきた…')+'</h2><ul class="res"><li>生きのびた 時間 '+mm+'</li><li>たおした 敵 '+R.kills+'体</li><li>経験値 '+Math.round(R.xpTot)+' → 勇者ランクと ジョブへ</li><li>ゴールド +'+gold+'</li>'+lines.map(l=>'<li class="hl">'+l+'</li>').join('')+'</ul><div class="opts"><button class="btn primary big" id="tv">拠点へ もどる</button></div>',()=>{document.getElementById('tv').onclick=()=>{if(SV.endingPend){closeModal();playEnding(toCamp)}else toCamp()}})}
+ const died=R.hp<=0&&!win,dh=died?deathReport():'';const showRes=()=>modal('<h2>'+(R.mode==='endless'?'深淵で 力つきた…':win?(R.mode==='trial'?'試練 クリア！':R.mode==='throne'?'玉座 制覇！':'ステージ クリア！'):'力つきた…')+'</h2>'+dh+'<ul class="res"><li>生きのびた 時間 '+mm+'</li><li>たおした 敵 '+R.kills+'体</li><li>経験値 '+Math.round(R.xpTot)+' → 勇者ランクと ジョブへ</li><li>ゴールド +'+gold+'</li>'+lines.map(l=>'<li class="hl">'+l+'</li>').join('')+'</ul><div class="opts"><button class="btn primary big" id="tv">拠点へ もどる</button></div>',()=>{document.getElementById('tv').onclick=()=>{if(SV.endingPend){closeModal();playEnding(toCamp)}else toCamp()}});if(died){const lh=R.lastHit;banner('力つきた…',lh?lh.src+(lh.k==='blast'?'の 大技':'に ぶつかった')+'（-'+lh.d+'）':'');R.deathFreeze=1;setTimeout(showRes,window.NOFREEZE?0:1400)}else showRes()}
 

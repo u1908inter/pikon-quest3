@@ -62,7 +62,7 @@ function collide(){const G=new Map(),C=16;for(const e of R.en){const k=(Math.flo
    for(const o of a){if(o===e||o.dead||e.dead)continue;const dx=o.x-e.x,dy=o.y-e.y,d=Math.hypot(dx,dy)||.01,rr=e.T.r+o.T.r-1;if(d>=rr)continue;
     const mE=e.T.m||1,mO=o.T.m||1,push=(rr-d)/2;e.x-=dx/d*push*mO/(mE+mO)*2;e.y-=dy/d*push*mO/(mE+mO)*2;o.x+=dx/d*push*mE/(mE+mO)*2;o.y+=dy/d*push*mE/(mE+mO)*2;
     if(fly&&!o.T.boss&&!(o.cd['bump']>R.t)){const v=Math.sqrt(sp2),tr=v*.6*mE/mO;o.vx+=dx/d*tr;o.vy+=dy/d*tr;e.vx*=.75;e.vy*=.75;hurtEnemy(o,Math.max(3,v/40)*R.F.bump,'bump',.25,e)}}}}}
-function hurtHero(raw,e){const F=R.F;if(R.inv>0||R.over||SV.opt.dbgGod)return;if(F.deep3&&R.mode==='endless')raw*=.7;const pop=(t,c)=>R.pops.push({x:R.x,y:R.y-14,txt:t,c,t:R.t});
+function hurtHero(raw,e,kind){const F=R.F;if(R.inv>0||R.over||SV.opt.dbgGod)return;if(F.deep3&&R.mode==='endless')raw*=.7;const pop=(t,c)=>R.pops.push({x:R.x,y:R.y-14,txt:t,c,t:R.t});
  if(rnd()<F.evade+(R.hp/R.max<.5?F.lowHpEvade:0)){R.inv=.3;pop('かわした','#9ae6ff');return}
  if(F.nullify&&rnd()<F.nullify){R.inv=.4;pop('ノーダメージ','#ff8ac0');return}
  if(F.parry&&rnd()<F.parry){R.inv=.4;pop('白刃取り','#fff');ringFx(R.x,R.y,40,'255,255,255',.25);nearR(40).forEach(o=>hurtEnemy(o,40,'pry',.3));return}
@@ -70,7 +70,7 @@ function hurtHero(raw,e){const F=R.F;if(R.inv>0||R.over||SV.opt.dbgGod)return;if
  let m=F.taken;if(F.mshield&&Object.keys(R.weapons).some(w=>WEAP[w].fam==='magic'))m*=.9;if(F.lowHpTaken&&R.hp/R.max<.3)m*=1-F.lowHpTaken;
  if(F.stillTaken&&Math.hypot(R.vx,R.vy)<8)m*=1-F.stillTaken;if(F.nearAllyTaken&&R.allies.some(a=>Math.hypot(a.x-R.x,a.y-R.y)<30))m*=1-F.nearAllyTaken;
  if(F.kingTaken)m*=Math.max(.5,1-F.kingTaken*R.allies.length);if(R.allies.some(a=>a.k==='golem'))m*=.85;if(F.wealthTaken)m*=1-Math.min(.2,.02*Math.floor(SV.gold/10000));if(e&&e.T.elite)m*=F.eliteTaken;
- const d=Math.max(1,Math.round(raw*m));R.hp-=d;R.hurtN=(R.hurtN||0)+1;R.inv=.6;sfx.hurt();shake(3);pop('-'+d,'#ff5a4e');
+ const d=Math.max(1,Math.round(raw*m));R.hp-=d;R.hurtN=(R.hurtN||0)+1;R.hurtT=R.t;{const src=e&&e.T?(e.T.n+(e.T.boss?'（ボス）':e.T.elite?'（強敵）':'')):'なにか';(R.dmgLog=R.dmgLog||[]).push({t:R.t,d,src,k:kind||'touch'});if(R.dmgLog.length>80)R.dmgLog.shift();R.dmgBy=R.dmgBy||{};const b=R.dmgBy[src]=R.dmgBy[src]||[0,0];b[0]+=d;b[1]++;R.lastHit={src,d,k:kind||'touch',e,hp0:R.hp+d};if(e)ringFx(e.x,e.y,(e.T.r||6)+7,'255,50,50',.4)}R.inv=.6;sfx.hurt();shake(3);pop('-'+d,'#ff5a4e');
  if(F.counter){ringFx(R.x,R.y,40,'255,255,255',.25);nearR(40).forEach(o=>hurtEnemy(o,20,'cnt',.3))}
  if(F.smoke){ringFx(R.x,R.y,50,'200,200,200',.4);nearR(50).forEach(o=>{if(!o.T.boss)o.sleep=Math.max(o.sleep||0,2.5)})}
  if(F.flee)R.fleeT=R.t+2;
@@ -82,7 +82,7 @@ function checkDeath(){if(R.over||R.hp>0)return;const F=R.F,save2=(t,s2,hp)=>{R.h
  if(F.phoenix&&(R.phN||0)<F.phoenix){R.phN=(R.phN||0)+1;save2('不死鳥の羽！','HP50%で よみがえった（のこり '+(F.phoenix-R.phN)+'回）',R.max*.5);return}
  if(F.revive30&&!R.rev30){R.rev30=1;save2('よみがえり！','HP30%で 立ち上がった',R.max*.3);return}if(R.F.revive&&!R.revived){R.revived=1;R.hp=Math.round(R.max*.5);R.inv=2;R.flash=R.t;shake(8);banner('イエティの カード！','HP50%で 立ち上がった');sfx.lv();R.shots.push({k:'ring',x:R.x,y:R.y,r:90,c:'200,230,255',t:0,life:.5});for(const o of R.en){const dx=o.x-R.x,dy=o.y-R.y,d=Math.hypot(dx,dy)||1;if(d<90&&!o.T.boss){o.vx+=dx/d*400;o.vy+=dy/d*400}}return}R.hp=0;endRun(false)}
 function bossBlast(e){R.shots.push({k:'ring',x:e.x,y:e.y,r:80,c:'255,60,60',t:0,life:.5});shake(8);hitStop(.08);for(const o of R.en)if(o!==e){const dx=o.x-e.x,dy=o.y-e.y,d=Math.hypot(dx,dy)||1;if(d<80){o.vx+=dx/d*200;o.vy+=dy/d*200}}tone('sawtooth',60,.5,.2,30);
- if(Math.hypot(R.x-e.x,R.y-e.y)<80&&R.t>=(R.sinvT||0)){R.inv=0;hurtHero(35*R.sm*R.F.blastTaken,e)}
+ if(Math.hypot(R.x-e.x,R.y-e.y)<80&&R.t>=(R.sinvT||0)){R.inv=0;hurtHero(35*R.sm*R.F.blastTaken,e,'blast')}
  for(let i=0;i<6;i++)spawn('slime',e.x+(rnd()-.5)*40,e.y+(rnd()-.5)*40)}
 function lvBlast(){R.shots.push({k:'ring',x:R.x,y:R.y,r:90,c:'110,200,255',t:0,life:.4});R.flash=R.t;shake(4);for(const e of R.en){const dx=e.x-R.x,dy=e.y-R.y,d=Math.hypot(dx,dy)||1;if(d<90&&!e.T.boss){const f=(1-d/90)*420/(e.T.m||1);e.vx+=dx/d*f;e.vy+=dy/d*f}}}
 function collect(p){if(p.k==='card'){R.cardsGot.push(p.card);R.pops.push({x:R.x,y:R.y-16,txt:'カード！ '+cardName(p.card),c:'#ffe14a',t:R.t});tone('square',1568,.12,.08);tone('square',2093,.15,.08,0,.08);return}

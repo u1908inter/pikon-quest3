@@ -110,7 +110,9 @@ textarea{width:100%;height:80px;font:12px monospace;border:2px solid var(--ink);
 .toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:6px 16px;font-size:13px;z-index:20;max-width:90%;text-align:center}
 /* 出撃中のHUD */
 #hud{position:absolute;left:0;right:0;top:0;padding:6px 10px;pointer-events:none;display:none;color:#fff}
-#xpb{height:10px;background:#000;border:2px solid #fff;border-radius:4px}
+#xpb{height:8px;background:#000;border:2px solid #fff;border-radius:4px;margin-top:3px}
+#hpb{position:relative;height:16px;background:#2a0e0e;border:2px solid #fff;border-radius:5px;overflow:hidden}#hpb i{position:absolute;left:0;top:0;bottom:0;width:0}#hpl{background:#ffd0c8}#hpi{background:linear-gradient(#5ff08a,#2fbf5c)}#hpb.mid #hpi{background:linear-gradient(#ffe06a,#e0a020)}#hpb.low #hpi{background:linear-gradient(#ff7a6a,#e0302a);animation:hpbl .6s steps(2) infinite}@keyframes hpbl{50%{filter:brightness(1.6)}}#hpt{position:absolute;left:0;right:0;top:0;line-height:12px;text-align:center;font-size:11px;font-weight:bold;color:#fff;text-shadow:1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000}
+#vig{position:absolute;inset:0;pointer-events:none;opacity:0;box-shadow:inset 0 0 50px 18px rgba(255,20,20,.9);z-index:1}
 #xpb i{display:block;height:100%;width:0;background:var(--xp)}
 #hrow{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-top:4px;text-shadow:2px 2px 0 #000}
 #time{font-size:20px}
@@ -129,7 +131,7 @@ textarea{width:100%;height:80px;font:12px monospace;border:2px solid var(--ink);
  <div id="stage">
   <canvas id="cv"></canvas><canvas id="tx"></canvas>
   <div id="camptag">拠点 ― キャンプ</div>
-  <div id="hud"><div id="xpb"><i id="xpi"></i></div><div id="hrow"><span id="lvl">Lv1</span><span id="time">0:00</span><span id="kills">0体</span><span id="streak"></span><button id="pause" aria-label="一時停止">II</button></div><div id="wz"></div></div>
+  <div id="vig"></div><div id="hud"><div id="hpb"><i id="hpl"></i><i id="hpi"></i><span id="hpt"></span></div><div id="xpb"><i id="xpi"></i></div><div id="hrow"><span id="lvl">Lv1</span><span id="time">0:00</span><span id="kills">0体</span><span id="streak"></span><button id="pause" aria-label="一時停止">II</button></div><div id="wz"></div></div>
   <button id="jb" aria-label="職業技"><span id="jbn">職業技</span><i id="jbg"></i></button>
  </div>
  <div id="camp"><nav class="tabs" id="tabs"></nav><div id="panel"></div></div>
