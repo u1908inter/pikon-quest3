@@ -28,6 +28,9 @@
 
 ## 公開とアクセス解析
 
+PLiCy 用の データは `python3 build.py` で `dist/pikon-quest3-plicy.zip`（index.html・game.js・bgm/）に できる。PLiCy では 上の ミニ実況の 帯の ぶん 画面を 下げる（URL に `?plicy` を つけると 手元でも 確認できる）。
+
+
 GitHub Pages（main ブランチの ルート）で `index.html` を 公開する。`index.html` には GoatCounter（`u1908inter.goatcounter.com`）の 計測タグが 入る。
 
 ゲームの 中では、各イベントを セーブごとに 1回だけ 送る（パスは `pq3-〇〇`。github.io 以外から 遊ばれたときは `pq3-x-〇〇`、PLiCy は `pq3-plicy-〇〇`）。デバッグ用の セーブでは 送らない。

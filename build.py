@@ -3,6 +3,7 @@
 src/shell.html に src/js/ の各ファイル（ORDER.txt の順）を埋めこんで 1つの HTML に する。
   python3 build.py        → index.html（GitHub Pages 用。アクセス解析 GoatCounter あり）
                              artifact.html（Claude の アーティファクト用。アクセス解析なし）
+                             dist/plicy/ と dist/pikon-quest3-plicy.zip（PLiCy 投稿用。HTML・game.js・BGM）
   python3 build.py --dev  → dev.html（テスト用。window.PQ3.ev が 使える）
 """
 import sys,os
@@ -21,3 +22,16 @@ else:
     rel=html.replace(DEV,REL)
     wr('index.html',rel.replace('<!--GC-->',GC))
     wr('artifact.html',rel.replace('<!--GC-->',''))
+    # PLiCy 用: HTML は 軽く、中身は game.js に。BGM は mp3 の まま
+    import shutil,zipfile,hashlib
+    pd=os.path.join(D,'dist','plicy');shutil.rmtree(pd,ignore_errors=True);os.makedirs(os.path.join(pd,'bgm'))
+    a=rel.rindex('<script>')+len('<script>');b=rel.index('</script>',a);gjs=rel[a:b]
+    ph=rel[:a-len('<script>')]+'<script src="game.js?v=%s"></script>'%hashlib.sha1(gjs.encode()).hexdigest()[:8]+rel[b+len('</script>'):]
+    open(os.path.join(pd,'game.js'),'w',encoding='utf-8').write(gjs);open(os.path.join(pd,'index.html'),'w',encoding='utf-8').write(ph.replace('<!--GC-->',GC))
+    for f in sorted(os.listdir(os.path.join(D,'bgm'))):
+        if f.endswith('.mp3'):shutil.copy(os.path.join(D,'bgm',f),os.path.join(pd,'bgm',f))
+    zp=os.path.join(D,'dist','pikon-quest3-plicy.zip')
+    with zipfile.ZipFile(zp,'w',zipfile.ZIP_DEFLATED) as z:
+        for r,_,fs in os.walk(pd):
+            for fn in sorted(fs):z.write(os.path.join(r,fn),os.path.relpath(os.path.join(r,fn),pd))
+    print('wrote',zp,'%.2f MB'%(os.path.getsize(zp)/1e6))

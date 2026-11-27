@@ -125,7 +125,13 @@ textarea{width:100%;height:80px;font:12px monospace;border:2px solid var(--ink);
 @keyframes pulse{to{transform:translateX(-50%) scale(1.06)}}
 :focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){#jb.ready{animation:none}}
-</style></head><body>
+</style><style>
+/* 投稿サイト（PLiCy）では 上に ミニ実況の 帯が 重なるので、そのぶん 下げる */
+html.plicy #app{padding-top:var(--boxTop,0px);box-sizing:border-box}
+html.plicy{--boxTop:92px}
+</style>
+<script>(function(){var d=document.documentElement,h=location.hostname,q=location.search;if(/(^|\.)plicy\.net$/.test(h)||/[?&]plicy\b/.test(q))d.classList.add('plicy')})();</script>
+</head><body>
 <div id="app" class="camp">
  <header class="top"><h1>ピコーン・クエスト<b>3</b></h1><div><span class="pill" id="lvPill">Lv1</span><span class="pill" id="goldPill">0G</span></div></header>
  <div id="stage">
