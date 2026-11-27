@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.3';
+const SAVE_V=3,GAME_VER='0.9.4';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -330,6 +330,7 @@ const bringN=()=>2+pCnt(['bring3','bring4','bring5']);
 const pwN=()=>3+pCnt(['pw4','pw5','pw6','pw7','pw8','pw9','pw10']);
 const spdMax=()=>1+pCnt(['spd2','spd3','spd4']);
 const spdRow=act=>'<div class="row">'+[1,2,3,4].map(v=>{const ok=SV.opt.spdFree||v<=spdMax();return '<button class="btn '+(effSpd()===v?'primary':'')+'" data-act="'+act+'" data-v="'+v+'"'+(ok?'':' disabled')+'>×'+v+(ok?'':'🔒')+'</button>'}).join('')+'</div>';
+const shkRow=()=>'<div class="row"><button class="btn '+(SV.opt.shake!==false?'primary':'')+'" data-v="1">あり</button><button class="btn '+(SV.opt.shake!==false?'':'primary')+'" data-v="0">なし</button></div>';
 const effSpd=()=>SV.opt.spdFree?(SV.opt.spd||1):Math.min(SV.opt.spd||1,spdMax());
 const auraLv=()=>pCnt(['aura1','aura2','aura3']);
 const refMax=()=>pOn('ref11')?11:10,abMax=()=>8+pCnt(['ab9','ab10']);
@@ -1916,8 +1917,8 @@ panel.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b|
  if(a==='wipe')modal('<h2>はじめから やりなおす？</h2><p>レベル・ジョブ・技・仲間・装備が すべて 消える。もとには もどせない。</p><div class="opts"><button class="btn" data-m="x">やめる</button><button class="btn danger" data-m="ok">消す</button></div>',()=>{mbox.onclick=e2=>{const m=e2.target.closest('[data-m]');if(!m)return;if(m.dataset.m==='ok'){for(const k of Object.keys(SV))delete SV[k];Object.assign(SV,DEF());migrateJobs();migrateSave();save();TAB='go';toast('データを 消した')}closeModal();renderCamp()}})});
 document.getElementById('pause').onclick=()=>{if(!R||R.over||R.paused)return;R.paused=true;
  const ws=Object.keys(R.weapons).map(w=>((Object.keys(EVO).find(k=>R.evo[k]&&EVO[k].from===w)?EVO[Object.keys(EVO).find(k=>R.evo[k]&&EVO[k].from===w)].n:WEAP[w].n))+' Lv'+R.weapons[w]).join('、'),ps=Object.keys(R.pass).map(p=>PASS[p].n+' Lv'+R.pass[p]).join('、')||'なし',wz=Object.keys(R.waza).map(k=>WAZA[k].n+' '+starTxt(SV.waza[k].star)).join('、')||'なし';
- modal('<h2>一時停止</h2><p>武器：'+ws+'<br>能力：'+ps+'<br>技：'+wz+'</p><p style="margin:8px 0 4px">倍速</p><div id="pspd">'+spdRow('pspd')+'</div><div class="opts"><button class="btn" id="gu">撤退する</button><button class="btn primary" id="rs">つづける</button></div><p class="hint">撤退しても、ここまでの 経験値・仲間・装備は 持ち帰れる。</p>',()=>{
- document.getElementById('pspd').onclick=e2=>{const b=e2.target.closest('[data-act=pspd]');if(!b||b.disabled)return;SV.opt.spd=+b.dataset.v;save();document.getElementById('pspd').innerHTML=spdRow('pspd')};document.getElementById('rs').onclick=()=>{closeModal();R.paused=false;last=performance.now()};document.getElementById('gu').onclick=()=>{closeModal();endRun(false)}})};
+ modal('<h2>一時停止</h2><p>武器：'+ws+'<br>能力：'+ps+'<br>技：'+wz+'</p><p style="margin:8px 0 4px">倍速</p><div id="pspd">'+spdRow('pspd')+'</div><p style="margin:8px 0 4px">画面の ゆれ</p><div id="pshk">'+shkRow()+'</div><div class="opts"><button class="btn" id="gu">撤退する</button><button class="btn primary" id="rs">つづける</button></div><p class="hint">撤退しても、ここまでの 経験値・仲間・装備は 持ち帰れる。</p>',()=>{
+ document.getElementById('pshk').onclick=e2=>{const b=e2.target.closest('[data-v]');if(!b)return;SV.opt.shake=b.dataset.v==='1';if(!SV.opt.shake)R.shk=0;save();document.getElementById('pshk').innerHTML=shkRow()};document.getElementById('pspd').onclick=e2=>{const b=e2.target.closest('[data-act=pspd]');if(!b||b.disabled)return;SV.opt.spd=+b.dataset.v;save();document.getElementById('pspd').innerHTML=spdRow('pspd')};document.getElementById('rs').onclick=()=>{closeModal();R.paused=false;last=performance.now()};document.getElementById('gu').onclick=()=>{closeModal();endRun(false)}})};
 
 /* ---------- 描画 ---------- */
 const hash=(x,y)=>{let h=(x*374761393+y*668265263)^0x5bd1e995;h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967296};
