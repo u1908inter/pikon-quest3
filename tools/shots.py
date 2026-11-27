@@ -22,7 +22,8 @@ async def main():
             await pg.evaluate("c=>PQ3.ev(c)","(()=>{for(let i=0;i<6;i++)SV.inv.push(makeItem(1));recommendEq();"+js+"})()");await pg.wait_for_timeout(200)
         async def shot(name):
             await pg.evaluate("document.querySelectorAll('.toast').forEach(t=>t.remove())");await pg.screenshot(path=OUT+'/'+name);print(name)
-        await fresh("closeModal();startRun()");await pg.wait_for_timeout(9000);await shot('battle.png')
+        await fresh("closeModal();SV.opt.nums='crit';SV.sel={st:3,rd:1};startRun();R.t=85");await pg.wait_for_timeout(6000)
+        await pg.evaluate("PQ3.ev('R.jg=1;jobSkill()')");await pg.wait_for_timeout(260);await shot('battle.png')
         await fresh("closeModal();SV.sel={st:1,rd:1};startRun();R.t=116");await pg.wait_for_timeout(7000);await shot('boss.png')
         await fresh("""SV.clear=[3,3,2,2,2,1];const it=makeItem(0,{r:3,slot:'w',wt:'sword'});it.lg='wdbl';it.set='kensei';it.afx.forEach((a,i)=>a.q=[.97,.88,.95,.99][i]||.9);it.ref=4;SV.inv.unshift(it);SV.eq.w=it.id;SV.want={dmg:1};closeModal();TAB='gear';renderCamp();itemModal(it.id,'')""")
         await pg.wait_for_timeout(300);await shot('gear.png')
