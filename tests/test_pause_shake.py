@@ -8,6 +8,7 @@ async def main():
         await pg.goto('http://localhost:8766/dev.html');await pg.evaluate("window._noSave=1;localStorage.clear();localStorage.setItem('pq3-vs',JSON.stringify({opt:{tips:false}}))");await pg.reload();await pg.wait_for_timeout(300)
         await pg.click('[data-act=sortie]');await pg.wait_for_timeout(800);await pg.click('#pause');await pg.wait_for_timeout(200)
         await pg.click('#pshk [data-v="0"]');await pg.wait_for_timeout(100);await pg.screenshot(path='/tmp/pq3test_pause.png')
-        print(await pg.evaluate("PQ3.ev('shake(9);JSON.stringify([SV.opt.shake,R.shk])')"));await pg.click('#rs')
+        await pg.click('#phs [data-v="weak"]');await pg.wait_for_timeout(100)
+        print(await pg.evaluate("PQ3.ev('shake(9);JSON.stringify([SV.opt.shake,R.shk,SV.opt.hs])')"));await pg.click('#rs')
         print(errs);await b.close()
 asyncio.run(main())

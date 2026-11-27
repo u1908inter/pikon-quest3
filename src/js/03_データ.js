@@ -119,6 +119,7 @@ const bringN=()=>2+pCnt(['bring3','bring4','bring5']);
 const pwN=()=>3+pCnt(['pw4','pw5','pw6','pw7','pw8','pw9','pw10']);
 const spdMax=()=>1+pCnt(['spd2','spd3','spd4']);
 const spdRow=act=>'<div class="row">'+[1,2,3,4].map(v=>{const ok=SV.opt.spdFree||v<=spdMax();return '<button class="btn '+(effSpd()===v?'primary':'')+'" data-act="'+act+'" data-v="'+v+'"'+(ok?'':' disabled')+'>×'+v+(ok?'':'🔒')+'</button>'}).join('')+'</div>';
+const hsRow=()=>'<div class="row">'+[['on','ふつう'],['weak','弱め'],['off','なし']].map(([v,t])=>'<button class="btn '+((SV.opt.hs||'on')===v?'primary':'')+'" data-v="'+v+'">'+t+'</button>').join('')+'</div>';
 const shkRow=()=>'<div class="row"><button class="btn '+(SV.opt.shake!==false?'primary':'')+'" data-v="1">あり</button><button class="btn '+(SV.opt.shake!==false?'':'primary')+'" data-v="0">なし</button></div>';
 const effSpd=()=>SV.opt.spdFree?(SV.opt.spd||1):Math.min(SV.opt.spd||1,spdMax());
 const auraLv=()=>pCnt(['aura1','aura2','aura3']);
