@@ -48,7 +48,10 @@ async def main():
         print('trialR',await pg.evaluate("PQ3.ev('JSON.stringify({w:R.weapons,al:R.allies.length,max:R.max,cond:R.cond})')"))
         await pg.evaluate("PQ3.ev('endRun(true)')");await pg.wait_for_timeout(200);print((await pg.inner_text('#mbox'))[:160].replace('\n',' / '));await pg.evaluate("PQ3.ev('toCamp()')")
         # throne
-        await pg.evaluate("PQ3.ev(\"startRun('throne')\")");await pg.wait_for_timeout(4500)
+        await pg.evaluate("PQ3.ev(\"startRun('throne');SV.opt.dbgGod=1\")")
+        for _ in range(40):
+            await pg.wait_for_timeout(250)
+            if await pg.evaluate("PQ3.ev('!!(R&&R.boss)')"):break
         print('throne',await pg.evaluate("PQ3.ev('JSON.stringify({boss:R.boss&&R.boss.T.n,hp:R.boss&&Math.round(R.boss.max)})')"))
         await pg.screenshot(path='/tmp/pq3test_throne.png')
         await pg.evaluate("PQ3.ev('R.hp=R.max;hurtEnemy(R.boss,1e12)')");await pg.wait_for_timeout(2300)
