@@ -4,19 +4,19 @@ const PASS={
  might:{n:'ちから',d:'ダメージ+10%'},cd:{n:'れんしゃ',d:'攻撃の間隔-8%'},area:{n:'ひろさ',d:'攻撃範囲+10%'},spd:{n:'はやさ',d:'移動速度+10%'},mag:{n:'じしゃく',d:'玉を引き寄せる範囲+30%'}
 };
 const EVO={
- renken:{n:'れんげき剣',from:'sword',need:'cd',d:'左右を高速でなぎはらう剣',hint:'剣を最大まで鍛え、攻撃の間隔を縮めると…'},
- inazuma:{n:'いなずま',from:'magic',need:'area',d:'画面中の敵に雷を落とす',hint:'魔法弾を最大まで鍛え、攻撃範囲を広げると…'},
- zantetsu:{n:'斬鉄剣',from:'katana',need:'might',d:'鋭さが増し、すばやく 何度も 斬る',hint:'刀を最大まで鍛え、ちからを 高めると…'},
- daisenpu:{n:'大旋斧',from:'axe',need:'area',d:'斧が 増えて 大きく 爆ぜる',hint:'斧を最大まで鍛え、攻撃範囲を広げると…'},
- gungnir:{n:'グングニル',from:'spear',need:'cd',d:'3方向を 長く つらぬく',hint:'槍を最大まで鍛え、攻撃の間隔を縮めると…'},
- senbon:{n:'千本ナイフ',from:'dagger',need:'cd',d:'ナイフの 雨が 止まらない',hint:'短剣を最大まで鍛え、攻撃の間隔を縮めると…'},
- ibara:{n:'いばらの鞭',from:'whip',need:'might',d:'長く 打ち、敵を 毒に する',hint:'鞭を最大まで鍛え、ちからを 高めると…'},
- boomstorm:{n:'ブーメランの嵐',from:'boom',need:'spd',d:'ブーメランが 嵐の ように 飛びかう',hint:'ブーメランを最大まで鍛え、はやさを 高めると…'},
- tenkyu:{n:'天弓',from:'bow',need:'cd',d:'矢が 雨の ように 降りそそぐ',hint:'弓を最大まで鍛え、攻撃の間隔を縮めると…'},
- fuma:{n:'風魔大手裏剣',from:'shuriken',need:'area',d:'手裏剣が どこまでも つらぬく',hint:'手裏剣を最大まで鍛え、攻撃範囲を広げると…'},
- tennyo:{n:'天女の舞',from:'fan',need:'spd',d:'扇が 舞い、大きく 渦を まく',hint:'扇を最大まで鍛え、はやさを 高めると…'},
- hoshi:{n:'星の杖',from:'staff',need:'might',d:'光の 玉が 星に なり、大きく 回復する',hint:'杖を最大まで鍛え、ちからを 高めると…'},
- tenjo:{n:'天上の調べ',from:'harp',need:'area',d:'音の 波が 敵を 止める',hint:'竪琴を最大まで鍛え、攻撃範囲を広げると…'}
+ renken:{n:'れんげき剣',from:'sword',need:'cd',d:'左右を高速でなぎはらう剣',hint:'剣を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ inazuma:{n:'いなずま',from:'magic',need:'area',d:'画面中の敵に雷を落とす',hint:'魔法弾を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ zantetsu:{n:'斬鉄剣',from:'katana',need:'might',d:'鋭さが増し、すばやく 何度も 斬る',hint:'刀を Lv5まで 上げ、「ちから」を 取ると…'},
+ daisenpu:{n:'大旋斧',from:'axe',need:'area',d:'斧が 増えて 大きく 爆ぜる',hint:'斧を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ gungnir:{n:'グングニル',from:'spear',need:'cd',d:'3方向を 長く つらぬく',hint:'槍を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ senbon:{n:'千本ナイフ',from:'dagger',need:'cd',d:'ナイフの 雨が 止まらない',hint:'短剣を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ ibara:{n:'いばらの鞭',from:'whip',need:'might',d:'長く 打ち、敵を 毒に する',hint:'鞭を Lv5まで 上げ、「ちから」を 取ると…'},
+ boomstorm:{n:'ブーメランの嵐',from:'boom',need:'spd',d:'ブーメランが 嵐の ように 飛びかう',hint:'ブーメランを Lv5まで 上げ、「はやさ」を 取ると…'},
+ tenkyu:{n:'天弓',from:'bow',need:'cd',d:'矢が 雨の ように 降りそそぐ',hint:'弓を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ fuma:{n:'風魔大手裏剣',from:'shuriken',need:'area',d:'手裏剣が どこまでも つらぬく',hint:'手裏剣を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ tennyo:{n:'天女の舞',from:'fan',need:'spd',d:'扇が 舞い、大きく 渦を まく',hint:'扇を Lv5まで 上げ、「はやさ」を 取ると…'},
+ hoshi:{n:'星の杖',from:'staff',need:'might',d:'光の 玉が 星に なり、大きく 回復する',hint:'杖を Lv5まで 上げ、「ちから」を 取ると…'},
+ tenjo:{n:'天上の調べ',from:'harp',need:'area',d:'音の 波が 敵を 止める',hint:'竪琴を Lv5まで 上げ、「ひろさ」を 取ると…'}
 };
 const ALLY={
  slime:{n:'スライム',pal:'aslime',sp:'slime',d:'ついて来て、ときどきHPを回復してくれる'},

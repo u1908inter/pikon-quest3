@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.11';
+const SAVE_V=3,GAME_VER='0.9.12';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -215,19 +215,19 @@ const PASS={
  might:{n:'ちから',d:'ダメージ+10%'},cd:{n:'れんしゃ',d:'攻撃の間隔-8%'},area:{n:'ひろさ',d:'攻撃範囲+10%'},spd:{n:'はやさ',d:'移動速度+10%'},mag:{n:'じしゃく',d:'玉を引き寄せる範囲+30%'}
 };
 const EVO={
- renken:{n:'れんげき剣',from:'sword',need:'cd',d:'左右を高速でなぎはらう剣',hint:'剣を最大まで鍛え、攻撃の間隔を縮めると…'},
- inazuma:{n:'いなずま',from:'magic',need:'area',d:'画面中の敵に雷を落とす',hint:'魔法弾を最大まで鍛え、攻撃範囲を広げると…'},
- zantetsu:{n:'斬鉄剣',from:'katana',need:'might',d:'鋭さが増し、すばやく 何度も 斬る',hint:'刀を最大まで鍛え、ちからを 高めると…'},
- daisenpu:{n:'大旋斧',from:'axe',need:'area',d:'斧が 増えて 大きく 爆ぜる',hint:'斧を最大まで鍛え、攻撃範囲を広げると…'},
- gungnir:{n:'グングニル',from:'spear',need:'cd',d:'3方向を 長く つらぬく',hint:'槍を最大まで鍛え、攻撃の間隔を縮めると…'},
- senbon:{n:'千本ナイフ',from:'dagger',need:'cd',d:'ナイフの 雨が 止まらない',hint:'短剣を最大まで鍛え、攻撃の間隔を縮めると…'},
- ibara:{n:'いばらの鞭',from:'whip',need:'might',d:'長く 打ち、敵を 毒に する',hint:'鞭を最大まで鍛え、ちからを 高めると…'},
- boomstorm:{n:'ブーメランの嵐',from:'boom',need:'spd',d:'ブーメランが 嵐の ように 飛びかう',hint:'ブーメランを最大まで鍛え、はやさを 高めると…'},
- tenkyu:{n:'天弓',from:'bow',need:'cd',d:'矢が 雨の ように 降りそそぐ',hint:'弓を最大まで鍛え、攻撃の間隔を縮めると…'},
- fuma:{n:'風魔大手裏剣',from:'shuriken',need:'area',d:'手裏剣が どこまでも つらぬく',hint:'手裏剣を最大まで鍛え、攻撃範囲を広げると…'},
- tennyo:{n:'天女の舞',from:'fan',need:'spd',d:'扇が 舞い、大きく 渦を まく',hint:'扇を最大まで鍛え、はやさを 高めると…'},
- hoshi:{n:'星の杖',from:'staff',need:'might',d:'光の 玉が 星に なり、大きく 回復する',hint:'杖を最大まで鍛え、ちからを 高めると…'},
- tenjo:{n:'天上の調べ',from:'harp',need:'area',d:'音の 波が 敵を 止める',hint:'竪琴を最大まで鍛え、攻撃範囲を広げると…'}
+ renken:{n:'れんげき剣',from:'sword',need:'cd',d:'左右を高速でなぎはらう剣',hint:'剣を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ inazuma:{n:'いなずま',from:'magic',need:'area',d:'画面中の敵に雷を落とす',hint:'魔法弾を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ zantetsu:{n:'斬鉄剣',from:'katana',need:'might',d:'鋭さが増し、すばやく 何度も 斬る',hint:'刀を Lv5まで 上げ、「ちから」を 取ると…'},
+ daisenpu:{n:'大旋斧',from:'axe',need:'area',d:'斧が 増えて 大きく 爆ぜる',hint:'斧を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ gungnir:{n:'グングニル',from:'spear',need:'cd',d:'3方向を 長く つらぬく',hint:'槍を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ senbon:{n:'千本ナイフ',from:'dagger',need:'cd',d:'ナイフの 雨が 止まらない',hint:'短剣を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ ibara:{n:'いばらの鞭',from:'whip',need:'might',d:'長く 打ち、敵を 毒に する',hint:'鞭を Lv5まで 上げ、「ちから」を 取ると…'},
+ boomstorm:{n:'ブーメランの嵐',from:'boom',need:'spd',d:'ブーメランが 嵐の ように 飛びかう',hint:'ブーメランを Lv5まで 上げ、「はやさ」を 取ると…'},
+ tenkyu:{n:'天弓',from:'bow',need:'cd',d:'矢が 雨の ように 降りそそぐ',hint:'弓を Lv5まで 上げ、「れんしゃ」を 取ると…'},
+ fuma:{n:'風魔大手裏剣',from:'shuriken',need:'area',d:'手裏剣が どこまでも つらぬく',hint:'手裏剣を Lv5まで 上げ、「ひろさ」を 取ると…'},
+ tennyo:{n:'天女の舞',from:'fan',need:'spd',d:'扇が 舞い、大きく 渦を まく',hint:'扇を Lv5まで 上げ、「はやさ」を 取ると…'},
+ hoshi:{n:'星の杖',from:'staff',need:'might',d:'光の 玉が 星に なり、大きく 回復する',hint:'杖を Lv5まで 上げ、「ちから」を 取ると…'},
+ tenjo:{n:'天上の調べ',from:'harp',need:'area',d:'音の 波が 敵を 止める',hint:'竪琴を Lv5まで 上げ、「ひろさ」を 取ると…'}
 };
 const ALLY={
  slime:{n:'スライム',pal:'aslime',sp:'slime',d:'ついて来て、ときどきHPを回復してくれる'},
@@ -1424,7 +1424,7 @@ const INTRO={
  tab_waza:['技','<p>戦いの 中で 技を 使っていると、ピコーン！と <b>新しい 技を ひらめく</b>。強敵や ボスの 近くほど ひらめきやすい。</p><p>ひらめいた 技は、次の 冒険に <b>持って行ける</b>。持って行く 技は ここで えらぶ。</p><p>技は 装備している 武器の 系統（斬・投・魔）の ものだけ 出る。使うほど ★が 上がって 強くなる。</p>'],
  wzv_tree:['技の 系譜','<p>どの 技から どの 技を ひらめくかの つながり。</p><p>まだ ひらめいていない 技は ？？？ に なっている。</p>'],
  wzv_rk:['連携','<p>2つの 技が 続けて 出ると、合体して <b>連携</b>に なる。</p><p>組み合わせで 名前と 威力が かわる。いろいろ 試して 図鑑を うめよう。</p>'],
- wzv_evo:['武器の 進化','<p>冒険中に 武器を 最大まで 鍛えて、条件を みたすと <b>進化</b>する。</p><p>進化した 武器は ぐっと 強くなる。条件は ここで 確かめられる。</p>'],
+ wzv_evo:['武器の 進化','<p>冒険中の レベルアップで 武器を <b>Lv5（最大）</b>まで 上げ、決まった 強化を 1つ 取ると、次の レベルアップで <b>進化</b>を えらべる（精錬とは 別）。</p><p>進化した 武器は ぐっと 強くなる。条件は ここで 確かめられる。</p>'],
  tab_ally:['仲間','<p>敵が 落とす <b>ハート</b>を 拾うと、その 敵が 仲間に なる。</p><p>仲間は 連れて行った 冒険で いっしょに 戦い、育つ。連れて行く 仲間は ここで えらぶ。</p><p>同じ 種族の ハートは <b>魂</b>に なる。魂で <b>合体</b>させると 仲間が 強くなる。</p><p>決まった 2体を いっしょに 連れて行くと <b>合体技</b>を 出すことも。</p>'],
  tab_gear:['装備','<p>強敵や ボスが 落とした 装備、装備屋で 買った 装備は ここで 身につける。</p><p>武器の 種類で <b>攻撃の 形が かわる</b>。ジョブの 得意武器なら ダメージ アップ。</p><p>迷ったら <b>おすすめ装備</b>ボタン。いらない 装備は まとめて 売れる。</p><p>カードは 装備の カード枠に 挿して 使う。</p><p>同じ 装備でも 効果の <b>品質</b>で 強さが ちがう。まれに <b>輝く</b> 装備・<b>伝説の 効果</b>・<b>セット</b>装備も 出る。深淵で 拾うと <b>深淵Lv</b>が つく。欲しい 効果を 登録すると ★で 知らせ、売らずに のこす。</p>'],
  tab_job:['ジョブ','<p>ジョブごとに 基本能力・得意武器・<b>必殺技</b>が ちがう。</p><p>冒険の 経験値で ジョブLvが 上がり、<b>アビリティ</b>を 覚える。覚えた アビリティは どの ジョブでも APの 範囲で はめられる。</p><p>ジョブを マスターすると その ジョブの 力の 一部が ずっと 効き、新しい ジョブも ひらく。転職は いつでも 無料。</p>'],
@@ -1542,6 +1542,7 @@ function soundTest(){SV.heard=SV.heard||{};const n=SND_LIST.filter(([k])=>SV.hea
 /* ---------- あそびかた ---------- */
 const HELP=[['きほん','画面を ドラッグして 動く。攻撃は 装備している 武器で 自動で 出る。2分 生きのびると ボスが 出て、たおすと クリア。倒れても 経験値・仲間・装備・カードは 持ち帰れる。'],
  ['ランクと レベル','<b>勇者ランク</b>は ずっと 残る 強さ。冒険で ためた 経験値で 上がり、HPと 攻撃力が のびる（100から 先は 限界突破）。<br><b>Lv</b>は その 冒険の 中だけの 強さ。ひし形を 拾うと 上がり、強化を 1つ えらべる（設定で 自動選択にも できる）。冒険が おわると Lv1に もどる。'],
+ ['武器の 進化','冒険中の レベルアップで 武器を Lv5（最大）まで 上げ、決まった 強化（ちから・れんしゃ・ひろさ・はやさ の どれか）を 1つ 取ると、次の レベルアップで 進化を えらべる。精錬とは 関係ない。条件は「技」→「進化」で 見られる。'],
  ['技と 連携','技は 戦いの 中で ひらめく。2つの 技が 続けて 出ると 連携。技は 武器の 系統（斬・投・魔）で 出る ものが かわる。'],
  ['ジョブ','ジョブで 能力・得意武器・必殺技が かわる。ゲージが たまったら 下の ボタンで 必殺技。ジョブLvで アビリティを 覚え、マスターで 力が ずっと 残る。アビリティは「アビリティ」タブで はめた ものだけ 効く（いまの ジョブの ものも 同じ）。ジョブの 基本能力は はめなくても 効く。'],
  ['仲間','ハートを 拾うと 仲間に なる。仲間は 冒険で 育ち、魂で 合体すると 強くなる。決まった 2体で 合体技。'],
@@ -1618,7 +1619,7 @@ function panelWaza(){const ks=Object.keys(WAZA).filter(k=>SV.waza[k]),rk=Object.
  if(WZV==='tree'){const f=WZF||cf;h+='<p class="hint">技を 使っていると、その先の 技を ひらめく。強敵や ボスの 近くほど ひらめきやすい。</p>'+subTabs(f,'wzf',['sword','boom','magic'].map(tg=>[tg,WTN[tg]+'の 技'+(tg===cf?'★':'')]))+'<p class="hint" style="margin:2px 0 4px">'+FAMW(f)+'で 出る 技</p><div class="list">';
   const walk=(k,d)=>{h+=wazaRow(k,d);KIDS(k).forEach(c=>walk(c,d+1))};Object.keys(WAZA).filter(k=>isBase(k)&&WAZA[k].tag===f).forEach(k=>walk(k,0));return h+'</div><p class="hint">★は いまの 武器の 系統。</p>'}
  if(WZV==='rk')return h+'<p class="hint">2つの 技が 続けて 出ると 合体して 連携に なる。組み合わせで 名前が 変わる。</p><div class="list">'+(rk.length?rk.map(([key,nm])=>'<div class="li"><div class="body"><div class="t"><span>'+nm+'</span></div><div class="d">'+key.split('+').map(k=>WAZA[k].n).join(' ＋ ')+'</div></div></div>').join(''):'<p class="hint">まだ 連携を 出していない。</p>')+'</div>';
- return h+'<p class="hint">冒険中に 武器を 最大まで 鍛えて、条件を みたすと 進化する。</p><div class="list">'+Object.keys(EVO).map(k=>'<div class="li'+(SV.book[k]?'':' locked')+'"><div class="body"><div class="t"><span>'+(SV.book[k]?EVO[k].n:'？？？')+'</span></div><div class="d">'+(SV.book[k]?EVO[k].d+'。'+EVO[k].hint.replace('…','')+'と 進化':EVO[k].hint)+'</div></div></div>').join('')+'</div>'}
+ return h+'<p class="hint">冒険中の レベルアップで 武器を <b>Lv5（最大）</b>まで 上げ、決まった 強化（ちから・れんしゃ など）を 1つ 取ると、次の レベルアップで 進化を えらべる。<b>精錬は 関係ない</b>。</p><div class="list">'+Object.keys(EVO).map(k=>'<div class="li'+(SV.book[k]?'':' locked')+'"><div class="body"><div class="t"><span>'+(SV.book[k]?EVO[k].n:'？？？')+'</span></div><div class="d">'+(SV.book[k]?EVO[k].d+'。'+EVO[k].hint.replace('…','')+' 進化':EVO[k].hint)+'</div></div></div>').join('')+'</div>'}
 /* 仲間 */
 function allyRow(k,btns){const A=SV.allies[k],sc=SV.souls[k]||0,lineup=A.evo?'<span class="tag" style="background:#ffe14a">進化</span>':'';
  return '<div class="li">'+sprImg(ALLY[k].sp,allyPal(k),30)+'<div class="body"><div class="t"><span>'+allyName(k)+lineup+'</span><span>Lv'+A.lv+(A.lv>=allyCap(A)?'（最大）':A.evo&&A.lv>ALLY_MAX?'（突破）':'')+'</span></div><div class="d">'+ALLY[k].d+(A.evo?'<br><span style="color:#b8860b">◆ '+EVOFX[ALLY_EVO[k][1]]+'（攻撃 1.5倍）</span>':'')+(sc?'<br><span style="color:#8a5cc8">魂 ×'+sc+'</span>':'')+'</div><div class="bar"><i style="width:'+(A.lv>=allyCap(A)?100:A.exp/allyNeed(A.lv)*100)+'%"></i></div></div><div style="display:flex;flex-direction:column;gap:3px">'+btns+'<button class="btn sm" data-act="ainfo" data-k="'+k+'">合体</button></div></div>'}
