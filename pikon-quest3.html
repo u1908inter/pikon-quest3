@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.10';
+const SAVE_V=3,GAME_VER='0.9.11';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -1434,7 +1434,7 @@ const INTRO={
  jbv_pw:['力の枠','<p>ユニーク装備（オレンジ）から 抽出した <b>力</b>を はめる 枠。</p><p>はめた 力は、どの 装備を 着ていても 効果が 出る。</p>'],
  tab_card:['カード','<p>敵が まれに 落とす カード。持ち帰ると 図鑑に のる。</p><p>装備の カード枠に 挿すと 力が 上がる（一度 挿すと はずせない）。</p><p>いらない カードは 町の 交換所で かけらに かえられる。</p>'],
  tab_town:['町','<p>ゴールドを 使う 場所。</p><p><b>装備屋</b>：冒険から 帰るたびに 品ぞろえが かわる。<br><b>精錬所</b>：装備を 鍛える。<br><b>交換所</b>：カードの 交換。<br><b>雑貨屋</b>：キャンプの 飾りや 服の 色。<br><b>施設</b>：ずっと 残る 強化。<br><b>祭壇</b>：深淵のかけらで 上限なしの 強化。</p>'],
- townv_ref:['精錬所','<p>ゴールドで 装備を 鍛える。+1ごとに 性能が 上がる。</p><p>+5を こえると 失敗で <b>こわれる</b>ことが ある。だいじな 装備は「安全圏まで」で 鍛えよう。</p><p>失敗すると <b>手応え</b>が たまり、次の 成功率が 上がる。</p>'],
+ townv_ref:['精錬所','<p>ゴールドで 装備を 鍛える。+1ごとに 性能が 上がる。どの 装備でも、どの ジョブでも 鍛えられる。</p><p>+5を こえると 失敗で <b>こわれる</b>ことが ある。だいじな 装備は「安全圏まで」で 鍛えよう。</p><p>失敗すると <b>手応え</b>が たまり、次の 成功率が 上がる。</p>'],
  townv_swap:['交換所','<p>いらない カードを「カードのかけら」に かえて、ほしい カードと 交換できる。</p><p>交換できるのは 図鑑に 登録ずみの カードだけ。</p>'],
  townv_deco:['雑貨屋','<p>キャンプを 飾ったり、ゆうしゃの 服の 色を かえたり できる。</p><p>飾りや 仲間は キャンプで タップすると 反応する。</p>'],
  townv_altar:['深淵の祭壇','<p>深淵で 集めた <b>深淵のかけら</b>を ささげて、ずっと 残る 力を 得る。</p><p>攻撃・HP・仲間・守り・経験値を、上限なしで 強くできる。深く もぐるほど かけらが 集まる。</p>'],
@@ -1545,7 +1545,7 @@ const HELP=[['きほん','画面を ドラッグして 動く。攻撃は 装備
  ['技と 連携','技は 戦いの 中で ひらめく。2つの 技が 続けて 出ると 連携。技は 武器の 系統（斬・投・魔）で 出る ものが かわる。'],
  ['ジョブ','ジョブで 能力・得意武器・必殺技が かわる。ゲージが たまったら 下の ボタンで 必殺技。ジョブLvで アビリティを 覚え、マスターで 力が ずっと 残る。アビリティは「アビリティ」タブで はめた ものだけ 効く（いまの ジョブの ものも 同じ）。ジョブの 基本能力は はめなくても 効く。'],
  ['仲間','ハートを 拾うと 仲間に なる。仲間は 冒険で 育ち、魂で 合体すると 強くなる。決まった 2体で 合体技。'],
- ['装備と 町','強敵・ボス・装備屋で 装備が 手に入る。効果には 品質（％）が あり、まれに 輝く 装備（×1.5）・伝説の 効果・セット装備（2つ・3つ そろうと 発動）も 出る。深淵で 拾うと 深い 層ほど 強い 深淵Lv つき。装備を ひらくと 効果を 固定して 付け直せる。精錬所で 鍛え、カードを 挿して 強くする。'],
+ ['装備と 町','強敵・ボス・装備屋で 装備が 手に入る。効果には 品質（％）が あり、まれに 輝く 装備（×1.5）・伝説の 効果・セット装備（2つ・3つ そろうと 発動）も 出る。深淵で 拾うと 深い 層ほど 強い 深淵Lv つき。装備を ひらくと 効果を 固定して 付け直せる。精錬所で 鍛え（どの 装備・どの ジョブでも できる。装備を ひらいても 鍛えられる）、カードを 挿して 強くする。'],
  ['周回と やりこみ','魔界を クリアすると 次の 周回が ひらき、特典が もらえる。10周目で エンディング。その あとも まだ 先が ある。試練・目標・実績も ある。']];
 function showHelp(){modal('<h2>あそびかた</h2><div class="intro" style="max-height:58vh;overflow:auto">'+HELP.map(([t,b])=>'<h3>'+t+'</h3><p>'+b+'</p>').join('')+'</div><div class="opts"><button class="btn primary big" id="hlc">とじる</button></div>',()=>{document.getElementById('hlc').onclick=closeModal})}
 /* ---------- 限界突破・深淵の祭壇 ---------- */
@@ -1782,7 +1782,7 @@ function refBulkModal(it){const r=it.ref||0,rows=[];for(let t=r+1;t<=refMax();t+
 function refRow(it,where){const r=it.ref||0;if(r>=refMax())return '<div class="li"><div class="body"><div class="t"><span style="'+rc(it.r)+'">'+itemName(it)+'</span><span style="color:var(--sec)">最大</span></div><div class="d">'+where+'</div></div></div>';
  const rate=refRate(r),cost=refCost(it);
  return '<div class="li"><div class="body"><div class="t"><span style="'+rc(it.r)+'">'+itemName(it)+'</span><span>+'+r+'→+'+(r+1)+'</span></div><div class="d">'+where+' ／ '+refMulTxt(r)+'→'+refMulTxt(r+1)+' ／ 成功率 <span style="'+(r>=5?'color:var(--pri-d)':'')+'">'+rate+'%</span>'+(SV.tego[r]?'（手応え +'+SV.tego[r]+'%）':'')+' ／ '+cost+'G</div></div><div style="display:flex;flex-direction:column;gap:3px"><button class="btn sm '+(r>=5?'danger':'primary')+'" data-act="ref1" data-id="'+it.id+'"'+(SV.gold>=cost?'':' disabled')+'>精錬</button>'+(r<5?'<button class="btn sm" data-act="refSafe" data-id="'+it.id+'"'+(SV.gold>=cost?'':' disabled')+'>安全圏まで</button>':'')+(r+1<refMax()?'<button class="btn sm" data-act="refBulk" data-id="'+it.id+'"'+(SV.gold>=cost?'':' disabled')+'>まとめて</button>':'')+'</div></div>'}
-function panelRefine(){let h='<h3>精錬所</h3><p class="hint">ゴールドで 装備を 鍛える。+1ごとに 性能 +10%（+10で 2倍）。'+(pOn('ref11')?'周回の 特典で +11まで 鍛えられる。':'')+'<br><span style="color:var(--pri-d)">+5から先は 失敗すると 30%で 装備が こわれる。</span><br>失敗するたびに「手応え」が たまり、その段の 成功率が +2% ずつ 上がる（こわれても 手応えは 残る。+10まで 鍛えると もとに もどる）。</p>';
+function panelRefine(){let h='<h3>精錬所</h3><p class="hint">ゴールドで 装備を 鍛える。+1ごとに 性能 +10%（+10で 2倍）。<b>どの 装備でも、どの ジョブでも 鍛えられる</b>（得意武器かどうかは 関係ない）。'+(pOn('ref11')?'周回の 特典で +11まで 鍛えられる。':'')+'<br><span style="color:var(--pri-d)">+5から先は 失敗すると 30%で 装備が こわれる。</span><br>失敗するたびに「手応え」が たまり、その段の 成功率が +2% ずつ 上がる（こわれても 手応えは 残る。+10まで 鍛えると もとに もどる）。</p>';
  const eq=Object.keys(SLOTN).map(sl=>eqOf(sl)).filter(Boolean);h+='<p style="margin:8px 0 4px">そうび中</p><div class="list">'+(eq.map(it=>refRow(it,SLOTN[it.slot])).join('')||'<p class="hint">なにも そうびしていない。</p>')+'</div>';
  const cand=SV.inv.filter(it=>!isEq(it)&&(it.r>=2||it.ref)).sort((a,b)=>b.r-a.r||statScore(b)-statScore(a));
  h+='<p style="margin:8px 0 4px">もちもの（レア以上・精錬ずみ）</p><div class="list">'+(cand.map(it=>refRow(it,'もちもの')).join('')||'<p class="hint">レア以上の 装備が ない。</p>')+'</div><p class="hint">これまでの 精錬 '+(SV.refN||0)+'回 ／ こわれた '+(SV.brokeN||0)+'こ</p>';return h}
