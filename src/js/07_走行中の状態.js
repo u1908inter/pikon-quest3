@@ -40,14 +40,14 @@ function hurtEnemy(e,d,src,cdTime,from,w){if(e.dead)return false;if(src){if(e.cd
  if(w){m*=F.wd[w];if(R.evoW&&R.evoW[w]){m*=1.8;if(w==='whip')e.psn=3;if(w==='harp')stun(e,.5);if(w==='staff')heal(.6,true)}if(F.resonance&&WEAP[w].fam==='magic')m*=1+F.resonance*R.allies.length;if(w==='sword'&&F.mken)m*=F.wd.magic;if(w==='katana'&&F.iai&&!e.iai){e.iai=1;m*=F.iai3?3:F.iai}if(w==='sword'&&F.mkenAfter&&R.t-(R.lastWzT||-9)<.6)m*=3}
  if(!dot){if(F.gamble)m*=.5+rnd()*1.5;if(F.jackpot&&rnd()<F.jackpot){m*=10;R.pops.push({x:e.x,y:e.y-14,txt:'大当たり！',c:'#ffe14a',t:R.t})}}
  if(e.sleep>0&&!T.boss)e.sleep=0;const still=Math.hypot(R.vx,R.vy)<8,crit=src!=='bump'&&src!=='wall'&&!dot&&rnd()<F.crit+(w==='katana'?.15:0)+(still?F.stillCrit:0)+(F.karei&&R.streak>=50?.15:0);
- d=Math.round(d*m*stat().dmg*(crit?F.critX+(w?F.wcx[w]:0):1));if(F.gravity&&w&&WEAP[w].fam==='magic'&&!T.boss)d+=Math.round(e.hp*F.gravity);if(F.poison&&!dot)e.psn=3;
+ d=src==='psn'?Math.max(1,Math.round(d*(T.boss?1/3:1))):Math.round(d*m*stat().dmg*(crit?F.critX+(w?F.wcx[w]:0):1));if(F.gravity&&w&&WEAP[w].fam==='magic'&&!T.boss)d+=Math.round(e.hp*F.gravity);if(F.poison&&!dot)e.psn=3;
  e.byAlly=!!(from&&from.lv!=null&&from.k);
  if(w){if(F.curse)e.curse=R.t+3;if(F.charm&&rnd()<F.charm)e.stun=Math.max(e.stun||0,.6);if(F.play&&rnd()<F.play&&!T.boss){e.stun=Math.max(e.stun||0,1.5);R.pops.push({x:e.x,y:e.y-10,txt:'わはは',c:'#ff8ac0',t:R.t})}
   if(w==='shuriken'){if(F.psnShur)e.psn=3;if(F.pin)e.stun=Math.max(e.stun||0,F.pin)}
   if(w==='sword'){if(F.burn)e.burnT=R.t+3;if(F.thunder&&rnd()<F.thunder)R.tq.push({at:R.t+.05,f:()=>{if(!e.dead){R.shots.push({k:'bolt',x:e.x,y:e.y,t:0,life:.2});hurtEnemy(e,20,null,0)}}});if(F.freeze&&rnd()<F.freeze)stun(e,1);if(F.prayHeal)heal(.4,true)}
   if(F.drain)heal(d*F.drain,true);if(F.magicGauge&&WEAP[w].fam==='magic')R.jg=Math.min(1,R.jg+.002*F.jg);
   if(w==='staff'&&F.comet&&rnd()<F.comet)R.tq.push({at:R.t+.3,f:()=>meteor(e.x,e.y,28,45)})}e.hp-=d;e.hitT=R.t;if(R.nums.length<(QL()==='high'?50:QL()==='mid'?22:10)&&(QL()!=='low'||crit))R.nums.push({x:e.x+(rnd()-.5)*6,y:e.y-6,v:d,t:R.t,crit});
- const fx=from?from.x:R.x,fy=from?from.y:R.y,dx=e.x-fx,dy=e.y-fy,l=Math.hypot(dx,dy)||1,imp=Math.min(460,90+d*7)*R.F.knock/(e.T.m||1);if(R.F.vamp&&R.vampB>0){const h=Math.min(R.vampB,d*.02);R.hp=Math.min(R.max,R.hp+h);R.vampB-=h}
+ const fx=from?from.x:R.x,fy=from?from.y:R.y,dx=e.x-fx,dy=e.y-fy,l=Math.hypot(dx,dy)||1,imp=Math.min((72+d*5.6)*R.F.knock,368*Math.min(1.5,Math.max(1,R.F.knock)))/(e.T.m||1);if(R.F.vamp&&R.vampB>0){const h=Math.min(R.vampB,d*.02);R.hp=Math.min(R.max,R.hp+h);R.vampB-=h}
  e.vx+=dx/l*imp;e.vy+=dy/l*imp;e.sq=R.t;spark(e.x,e.y,d>=30?'#ffd34e':'#ffffff',d>=30?6:3);if(d>=40){hitStop(.04);shake(2)}
  if(e.hp<=0){e.kx=dx/l;e.ky=dy/l;e.kimp=imp;kill(e)}return true}
 function QL(){try{return SV.opt.q||'high'}catch(_){return 'high'}}

@@ -137,7 +137,7 @@ const CARDSP={
  forestlord:{d:'ひらめき率2倍・1回に ひらめける数+2',f:F=>{F.hira*=2;F.hiraCap+=2}},
  golemS:{d:'受けるダメージ-30%',f:F=>{F.taken*=.7}},
  golem:{d:'吹っ飛ばす力2倍・ぶつかったときの ダメージ2倍',f:F=>{F.knock*=2;F.bump*=2}},
- scorpionB:{d:'攻撃した敵を 毒にする（毎秒 最大HPの3%）',f:F=>{F.poison=1}},
+ scorpionB:{d:'攻撃した敵を 毒にする（毎秒 最大HPの3%・ボスは1%）',f:F=>{F.poison=1}},
  giant:{d:'職業技の ゲージが 2倍の 速さで たまる',f:F=>{F.jg*=2}},
  yeti:{d:'倒れても 1回だけ HP50%で 立ち上がる',f:F=>{F.revive=1}},
  fenrir:{d:'移動速度+25%・攻撃間隔-15%',f:F=>{F.spd*=1.25;F.cdm*=.85}},
