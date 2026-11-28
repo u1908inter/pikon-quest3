@@ -497,7 +497,17 @@ const UNIQ={
  enjin:{n:'炎の指輪',slot:'c',p:'魔法弾が当たると小さく爆発する',f:F=>{F.fireBolt=1}},
  kyuketsu:{n:'吸血の剣',slot:'w',p:'与えたダメージの一部でHPが回復する',f:F=>{F.vamp=1}},
  koun:{n:'幸運のメダル',slot:'c',p:'ひらめき率+30%・ハートが出やすい',f:F=>{F.hira*=1.3;F.heart*=2}},
- kyojin:{n:'巨人のたて',slot:'s',p:'敵を1.5倍吹き飛ばす',f:F=>{F.knock*=1.5}}
+ kyojin:{n:'巨人のたて',slot:'s',p:'敵を1.5倍吹き飛ばす',f:F=>{F.knock*=1.5}},
+ shippu:{n:'疾風のマント',slot:'s',p:'移動速度+20%',f:F=>{F.spd*=1.2}},
+ teppeki:{n:'鉄壁のたて',slot:'s',p:'受けるダメージ-15%',f:F=>{F.taken*=.85}},
+ gouriki:{n:'剛力の腕輪',slot:'c',p:'ダメージ+15%',f:F=>{F.dmg*=1.15}},
+ kaishin:{n:'会心のピアス',slot:'c',p:'会心率+10%',f:F=>{F.crit+=.1}},
+ daichi:{n:'大地の鈴',slot:'c',p:'攻撃範囲+15%',f:F=>{F.area*=1.15}},
+ seimei:{n:'生命の宝珠',slot:'c',p:'最大HP+25%',f:F=>{F.hp*=1.25}},
+ chie:{n:'知恵の書',slot:'c',p:'技の間隔-15%',f:F=>{F.wazaCd*=.85}},
+ kizuna:{n:'絆のスカーフ',slot:'c',p:'仲間の攻撃+30%',f:F=>{F.ally*=1.3}},
+ jishaku:{n:'磁石の首飾り',slot:'c',p:'玉を引き寄せる範囲+60%・経験値+10%',f:F=>{F.mag*=1.6;F.xp*=1.1}},
+ ougon:{n:'黄金の財布',slot:'c',p:'ゴールド+50%',f:F=>{F.gold*=1.5}}
 };
 const ARTI={
  katana_a:{n:'天叢雲',slot:'w',wt:'katana',p:L=>'会心率+'+(15+L)+'%・会心ダメージ+'+(60+10*L)+'%',f:(F,L)=>{F.crit+=.15+.01*L;F.critX+=.6+.1*L}},
