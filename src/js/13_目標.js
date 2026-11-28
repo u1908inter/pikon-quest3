@@ -55,7 +55,7 @@ const goalOk=g=>{try{return !!g[2]()}catch(_){return false}};
 function goalReward(i){return {gold:Math.round(80*Math.pow(1+i,1.55)/10)*10,ab:i>=22?2+Math.floor((i-22)/3):0}}
 const rewTxt=rw=>rw.gold+'G'+(rw.ab?'・深淵のかけら '+rw.ab+(abyssOpen()?'':'（神器の 強化に 使える）'):'');
 const goalsDone=()=>GOALS.filter(g=>(SV.goals||{})[g[0]]).length;
-function goalsShown(){SV.goals=SV.goals||{};return GOALS.map((g,i)=>({g,i})).filter(o=>!SV.goals[o.g[0]]).slice(0,3)}
+function goalsShown(){SV.goals=SV.goals||{};const un=GOALS.map((g,i)=>({g,i})).filter(o=>!SV.goals[o.g[0]]),ok=un.filter(o=>goalOk(o.g));return ok.concat(un.filter(o=>!goalOk(o.g)).slice(0,Math.max(0,3-ok.length)))}
 const goalsReady=()=>goalsShown().filter(o=>goalOk(o.g)).length;
 function panelGoals(){const list=goalsShown(),done=goalsDone();
  let h='<h3>目標（'+done+'／'+GOALS.length+'）</h3><div class="row" style="margin:-4px 0 6px"><button class="btn sm" data-act="goalList">目標の 一覧を 見る</button>'+(goalsReady()>=2?'<button class="btn sm primary" data-act="goalAll">まとめて 受け取る</button>':'')+'</div>';

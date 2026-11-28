@@ -156,7 +156,7 @@ const STAGE_LEN=120,TF=180/STAGE_LEN;
 const KEY='pq3-vs';
 const DEF=()=>({comboBook:{},lv:1,exp:0,gold:0,up:{atk:0,hp:0,spd:0,slot:0},allies:{},party:[],book:{},runs:0,best:0,clears:0,waza:{},bring:[],inv:[],eq:{w:null,s:null,c:null},tego:{},job:'kenshi',jobs:{kenshi:{lv:1,exp:0},mahou:{lv:1,exp:0},mamono:{lv:1,exp:0},suppin:{lv:1,exp:0}},abil:[],ext:{},pw:[null,null,null],clear:[0,0,0,0,0,0],sel:{st:0,rd:1},cards:{},album:{},rkBook:{},opt:{sound:true,zoom:true}});
 const SV=Object.assign(DEF(),(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}})());
-const SAVE_V=3,GAME_VER='0.9.13';
+const SAVE_V=3,GAME_VER='0.9.14';
 function migrateSave(){const v=SV.v||0;
  if(v<3){SV.comboBook=SV.comboBook||{};SV.want=SV.want||{};SV.eqSets=SV.eqSets||{};SV.altar=SV.altar||{};SV.stats=SV.stats||{};SV.seen=SV.seen||{};SV.lgBook=SV.lgBook||{};SV.setBook=SV.setBook||{};SV.goals=SV.goals||{};SV.hist=SV.hist||[];SV.lose=SV.lose||{};
   (SV.inv||[]).forEach(it=>{it.afx=it.afx||[];it.cards=it.cards||[]});if(!Array.isArray(SV.pw))SV.pw=[null,null,null]}
@@ -1400,7 +1400,7 @@ const goalOk=g=>{try{return !!g[2]()}catch(_){return false}};
 function goalReward(i){return {gold:Math.round(80*Math.pow(1+i,1.55)/10)*10,ab:i>=22?2+Math.floor((i-22)/3):0}}
 const rewTxt=rw=>rw.gold+'G'+(rw.ab?'・深淵のかけら '+rw.ab+(abyssOpen()?'':'（神器の 強化に 使える）'):'');
 const goalsDone=()=>GOALS.filter(g=>(SV.goals||{})[g[0]]).length;
-function goalsShown(){SV.goals=SV.goals||{};return GOALS.map((g,i)=>({g,i})).filter(o=>!SV.goals[o.g[0]]).slice(0,3)}
+function goalsShown(){SV.goals=SV.goals||{};const un=GOALS.map((g,i)=>({g,i})).filter(o=>!SV.goals[o.g[0]]),ok=un.filter(o=>goalOk(o.g));return ok.concat(un.filter(o=>!goalOk(o.g)).slice(0,Math.max(0,3-ok.length)))}
 const goalsReady=()=>goalsShown().filter(o=>goalOk(o.g)).length;
 function panelGoals(){const list=goalsShown(),done=goalsDone();
  let h='<h3>目標（'+done+'／'+GOALS.length+'）</h3><div class="row" style="margin:-4px 0 6px"><button class="btn sm" data-act="goalList">目標の 一覧を 見る</button>'+(goalsReady()>=2?'<button class="btn sm primary" data-act="goalAll">まとめて 受け取る</button>':'')+'</div>';
